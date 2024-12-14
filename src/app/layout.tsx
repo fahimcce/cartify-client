@@ -1,12 +1,11 @@
-/* eslint-disable prettier/prettier */
 import "@/src/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
 
-import { Providers } from "./providers";
-
 import { siteConfig } from "@/src/config/site";
 import { fontSans } from "@/src/config/fonts";
+import { Providers } from "../lib/Providers";
+import { AuthProvider } from "../context/AuthContext";
 
 export const metadata: Metadata = {
   title: {
@@ -40,9 +39,11 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          {children}
-        </Providers>
+        <AuthProvider>
+          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+            {children}
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

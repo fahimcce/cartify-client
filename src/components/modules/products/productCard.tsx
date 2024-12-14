@@ -1,9 +1,9 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable no-console */
+"use client";
+import { IProduct } from "@/src/types/ProductTypes";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import Image from "next/image";
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product }: { product: IProduct }) {
   //   console.log(product);
 
   return (

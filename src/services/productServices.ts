@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import envConfig from "../config/envConfig";
 import { delay } from "../utils/delay";
 

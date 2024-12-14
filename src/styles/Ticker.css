@@ -1,0 +1,42 @@
+/* Ticker Container */
+.ticker-container {
+  overflow: hidden;
+  background-color: #0a2540; /* Dark blue background */
+  color: white;
+  padding: 15px 0;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Ticker Content */
+.ticker-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 50px; /* Space between items */
+  animation: scroll-left 120s linear infinite; /* Left-to-right scrolling */
+}
+
+/* Ticker Items */
+.ticker-item {
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Space between star and text */
+}
+
+.star {
+  color: #e63946; /* Red star color */
+  font-size: 20px;
+}
+
+/* Animation */
+@keyframes scroll-left {
+  from {
+    transform: translateX(-100%); /* Start from outside the left edge */
+  }
+  to {
+    transform: translateX(100%); /* Move to outside the right edge */
+  }
+}
