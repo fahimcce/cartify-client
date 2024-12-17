@@ -1,3 +1,5 @@
+
+/* eslint-disable padding-line-between-statements */
 export const uploadImageToCloudinary = async (file: any) => {
   const formData = new FormData();
   formData.append("file", file);

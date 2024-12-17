@@ -1,3 +1,8 @@
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable no-console */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useRef } from "react";

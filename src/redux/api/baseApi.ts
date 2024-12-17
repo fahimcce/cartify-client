@@ -1,64 +1,85 @@
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable no-console */
+/* eslint-disable import/order */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable unused-imports/no-unused-imports */
 import {
   fetchBaseQuery,
   createApi,
   BaseQueryFn,
   FetchArgs,
+  FetchBaseQueryError,
   BaseQueryApi,
-  DefinitionType,
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { logOut, setUser } from "../features/auth/authSlice";
+import envConfig from "@/src/config/envConfig";
 
-// import Cookies from "js-cookie";
+// Base query with token from state
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:4000/api",
+  baseUrl: `${envConfig.baseApi}`,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;
     if (token) {
-      headers.set(`authorization`, `${token}`);
+      headers.set("authorization", `${token}`);
     }
     return headers;
   },
 });
-// get accesstoken with refresh token
+
+// Custom base query with refresh token logic
 const BaseQueryWithRefreshToken: BaseQueryFn<
-  FetchArgs,
-  BaseQueryApi,
-  DefinitionType
-> = async (args, api, extraOptions): Promise<any> => {
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 401) {
-    //     // sending refresh token
-    const res = await fetch("http://localhost:4000/api/auth/refresh-token", {
-      method: "POST",
-      credentials: "include",
-    });
+    console.warn("Access token expired, attempting refresh...");
 
-    const data = await res.json();
-    // refresh token valid
-    if (data?.success) {
-      // set the accesstoken in exsiting user using api dispatch {signa, getState, dispatch} = api
-      const user = (api.getState() as RootState).auth.user;
-      api.dispatch(
-        setUser({
-          user,
-          token: data?.data,
-        })
+    try {
+      // Attempt to refresh token
+      const refreshResponse = await fetch(
+        `${envConfig.baseApi}/auth/refresh-token`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
       );
-      result = await baseQuery(args, api, extraOptions);
-    } else {
+
+      const data = await refreshResponse.json();
+
+      if (data?.success) {
+        // Update token and user info in the auth slice
+        const user = (api.getState() as RootState).auth.user;
+        api.dispatch(
+          setUser({
+            user,
+            token: data?.data, // Assuming `data.data` contains the new access token
+          })
+        );
+
+        // Retry the original request with the new token
+        result = await baseQuery(args, api, extraOptions);
+      } else {
+        console.error("Refresh token expired or invalid.");
+        api.dispatch(logOut());
+      }
+    } catch (error) {
+      console.error("Error during token refresh:", error);
       api.dispatch(logOut());
     }
   }
+
   return result;
 };
 
+// Create the API slice
 export const baseApi = createApi({
   reducerPath: "baseApi",
-  //   baseQuery: baseQuery,
   baseQuery: BaseQueryWithRefreshToken,
-  tagTypes: ["user", "post", "category", "payment"],
+  tagTypes: ["user", "shop", "product", "payment"],
   endpoints: () => ({}),
 });

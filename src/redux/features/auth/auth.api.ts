@@ -1,3 +1,4 @@
+/* eslint-disable padding-line-between-statements */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { baseApi } from "../../api/baseApi";

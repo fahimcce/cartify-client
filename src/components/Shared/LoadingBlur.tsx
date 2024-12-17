@@ -1,3 +1,5 @@
+
+/* eslint-disable react/jsx-sort-props */
 import { Spinner } from "@nextui-org/spinner";
 import React from "react";
 

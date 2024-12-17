@@ -1,3 +1,4 @@
+/* eslint-disable react/self-closing-comp */
 "use client";
 import { Card, CardHeader, CardBody, Skeleton } from "@nextui-org/react";
 export default function CardSkeleton() {

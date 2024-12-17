@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 "use server";
 import { getAllProducts } from "@/src/services/productServices";
 import FeatureCard from "./FeatureCard";
@@ -15,7 +16,7 @@ export default async function FeatureProducts() {
         </p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {products.data.map((product :IProduct) => (
+        {products.data.map((product: IProduct) => (
           <FeatureCard key={product.id} product={product} />
         ))}
       </div>

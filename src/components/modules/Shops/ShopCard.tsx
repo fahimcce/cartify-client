@@ -1,16 +1,42 @@
+/* eslint-disable import/order */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable no-console */
 "use client";
+
+import { updateShopRestriction } from "@/src/services/UserService/UserService";
 import { Tshop } from "@/src/types";
+import { useState } from "react";
+
+import { toast } from "sonner";
 
 interface ShopCardProps {
-  shop: Tshop; // This ensures the shop prop is typed correctly
+  shop: Tshop;
 }
 
 const ShopCard: React.FC<ShopCardProps> = ({ shop }) => {
-  const { shopName, shopLogo, address, vendor } = shop;
-  // Delete button logic will go here when you implement it
+  const { id, shopName, shopLogo, address, vendor, restricted } = shop;
+
+  // State to track restriction status dynamically
+  const [isRestricted, setIsRestricted] = useState(restricted);
+
+  const handleRestrictionToggle = async () => {
+    const newStatus = !isRestricted; // Toggle restriction status
+    try {
+      await updateShopRestriction(id, { restricted: newStatus }); // Send updated payload
+      setIsRestricted(newStatus); // Update local state
+      toast.success(
+        `${shopName} is now ${newStatus ? "Restricted" : "Unrestricted"}`
+      );
+    } catch (error: any) {
+      console.error("Error updating restriction:", error.message);
+      toast.error("Failed to update shop restriction.");
+    }
+  };
+
   const handleDelete = () => {
     console.log(`Delete shop: ${shopName}`);
-    // Add API call for deletion here when ready
   };
 
   return (
@@ -25,12 +51,27 @@ const ShopCard: React.FC<ShopCardProps> = ({ shop }) => {
       </div>
       <p className="text-gray-600">{address}</p>
       <p className="text-gray-600 mt-2">Vendor: {vendor.name}</p>
-      <button
-        onClick={handleDelete}
-        className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+      <p
+        className={`mt-2 px-2 py-1 inline-block rounded-full text-white ${
+          isRestricted ? "bg-red-500" : "bg-green-500"
+        }`}
       >
-        Delete
-      </button>
+        {isRestricted ? "Restricted Shop" : "Active Shop"}
+      </p>
+      <div>
+        <button
+          onClick={handleDelete}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          Delete
+        </button>
+        <button
+          onClick={handleRestrictionToggle}
+          className="mt-4 ml-2 px-4 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700"
+        >
+          {isRestricted ? "Unrestrict?" : "Restrict?"}
+        </button>
+      </div>
     </div>
   );
 };

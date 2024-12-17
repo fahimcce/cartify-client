@@ -39,6 +39,7 @@ export type Tshop = {
   shopLogo: string;
   description: string;
   address: string;
+  restricted: boolean;
   isDeleted: boolean;
   createdAt: string;
   updatedAt: string;

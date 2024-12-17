@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice";
 import storage from "redux-persist/lib/storage";

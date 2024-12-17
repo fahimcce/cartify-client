@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 import "@/src/styles/globals.css";
 import { Metadata, Viewport } from "next";
 import clsx from "clsx";
@@ -6,6 +7,8 @@ import { siteConfig } from "@/src/config/site";
 import { fontSans } from "@/src/config/fonts";
 import { Providers } from "../lib/Providers";
 import { AuthProvider } from "../context/AuthContext";
+import GProvider from "../providers/Provider";
+import ScrollToTop from "../components/Shared/ScrollToTop";
 
 export const metadata: Metadata = {
   title: {
@@ -39,11 +42,16 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <AuthProvider>
-          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-            {children}
-          </Providers>
-        </AuthProvider>
+        <GProvider>
+          <AuthProvider>
+            <Providers
+              themeProps={{ attribute: "class", defaultTheme: "dark" }}
+            >
+              {children}
+            </Providers>
+          </AuthProvider>
+        </GProvider>
+        <ScrollToTop />
       </body>
     </html>
   );

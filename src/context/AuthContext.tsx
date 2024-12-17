@@ -1,3 +1,4 @@
+/* eslint-disable padding-line-between-statements */
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
@@ -19,10 +20,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const userFromCookies = Cookies.get("user")
       ? JSON.parse(Cookies.get("user") as string)
       : null;
-    const tokenFromCookies = Cookies.get("accessToken") || null;
-
     setUserState(userFromCookies);
-    setToken(tokenFromCookies);
   }, []);
 
   const logOut = () => {

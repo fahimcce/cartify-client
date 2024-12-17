@@ -1,5 +1,6 @@
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable import/order */
 import Cookies from "js-cookie";
-
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
 

@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 "use server";
 import { getAllUsers } from "@/src/services/UserService/UserService";
 import UsersTable from "./UsersTable";

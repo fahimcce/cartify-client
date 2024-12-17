@@ -1,3 +1,8 @@
+/* eslint-disable import/order */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -5,6 +10,8 @@ import axios from "axios";
 import { toast } from "sonner";
 import Cookies from "js-cookie"; // Import js-cookie for cookie management
 import { verifiyToken } from "@/src/utils/verifyToken";
+import { useAppDispatch } from "@/src/redux/hook";
+import { setUser } from "@/src/redux/features/auth/authSlice";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -12,6 +19,7 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const dispatch = useAppDispatch();
 
   // Handle navigation to the registration page
   const handleRegisterRedirect = () => {
@@ -37,21 +45,25 @@ const LoginPage = () => {
       const { accessToken, refreshToken } = response.data.data;
 
       // Store the tokens in cookies
-      Cookies.set("accessToken", accessToken);
-      Cookies.set("refreshToken", refreshToken);
+      // Cookies.set("accessToken", accessToken);
+      Cookies.set("accessToken", accessToken, { path: "/", secure: false });
+      Cookies.set("refreshToken", refreshToken, { path: "/", secure: false });
+      // Cookies.set("refreshToken", refreshToken);
 
       const user = verifiyToken(accessToken);
       // console.log(user);
       Cookies.set(
         "user",
         JSON.stringify({
-          email: user.email,
-          role: user.role,
-          name: user.name,
-          photo: user.profilePhoto,
-          id: user.id,
+          email: user?.email,
+          role: user?.role,
+          name: user?.name,
+          photo: user?.profilePhoto,
+          id: user?.id,
         })
       );
+      // axios.defaults.headers.common["Authorization"] = `${accessToken}`;
+      dispatch(setUser({ user, token: accessToken }));
 
       // Show success toast
       toast.success("Logged in successfully!");

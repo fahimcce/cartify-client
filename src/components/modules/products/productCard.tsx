@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable import/order */
 "use client";
 import { IProduct } from "@/src/types/ProductTypes";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";

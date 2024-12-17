@@ -1,5 +1,5 @@
+/* eslint-disable react/jsx-sort-props */
 "use client";
-/* eslint-disable prettier/prettier */
 import { Image } from "@nextui-org/react";
 export default function LandingPage() {
   return (

@@ -1,15 +1,15 @@
-"use client"; // Ensure it's client-side
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable import/order */
+"use client";
 
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation"; // Import useRouter hook
-import {
-  AiOutlineDashboard,
-  AiOutlineUser,
-  AiOutlineSetting,
-} from "react-icons/ai";
+import { AiOutlineDashboard, AiOutlineUser } from "react-icons/ai";
 import { MdOutlineAssignment } from "react-icons/md";
+import { useAuth } from "@/src/context/AuthContext";
 
 const Sidebar: FC = () => {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter(); // Initialize the useRouter hook
 
@@ -33,7 +33,9 @@ const Sidebar: FC = () => {
             isOpen ? "" : "hidden"
           }`}
         >
-          Admin Panel
+          {user?.role == "ADMIN" && "Admin Panel"}
+          {user?.role == "VENDOR" && "VENDOR Panel"}
+          {user?.role == "CUSTOMER" && "CUSTOMER Panel"}
         </h2>
         <button
           onClick={toggleSidebar}
@@ -45,42 +47,97 @@ const Sidebar: FC = () => {
 
       <nav className="mt-8">
         <ul>
-          <li>
-            <button
-              onClick={() => handleNavigation("/admin/dashboard")}
-              className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
-            >
-              <AiOutlineDashboard className="mr-4 text-xl" />
-              <span className={isOpen ? "" : "hidden"}>Dashboard</span>
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => handleNavigation("/admin/users")}
-              className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
-            >
-              <AiOutlineUser className="mr-4 text-xl" />
-              <span className={isOpen ? "" : "hidden"}>Users</span>
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => handleNavigation("/admin/shops")}
-              className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
-            >
-              <MdOutlineAssignment className="mr-4 text-xl" />
-              <span className={isOpen ? "" : "hidden"}>Shops</span>
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => handleNavigation("/admin/settings")}
-              className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
-            >
-              <AiOutlineSetting className="mr-4 text-xl" />
-              <span className={isOpen ? "" : "hidden"}>Settings</span>
-            </button>
-          </li>
+          {user?.role === "ADMIN" && (
+            <>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/admin")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <AiOutlineDashboard className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>Dashboard</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/admin/users")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <AiOutlineUser className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>Users</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/admin/shops")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <MdOutlineAssignment className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>Shops</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/admin/category")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <MdOutlineAssignment className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>CateGories</span>
+                </button>
+              </li>
+            </>
+          )}
+          {user?.role === "VENDOR" && (
+            <>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/vendor/my-shop")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <AiOutlineDashboard className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>My Shop</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/vendor/create-shop")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <AiOutlineUser className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>Create Shop</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/vendor/create-product")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <MdOutlineAssignment className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>Create Product</span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/vendor/my-products")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <MdOutlineAssignment className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>
+                    My shops Products
+                  </span>
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/vendor/total-orders")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <MdOutlineAssignment className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>Total Order</span>
+                </button>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </div>

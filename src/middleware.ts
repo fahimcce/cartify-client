@@ -1,21 +1,8 @@
+/* eslint-disable import/order */
+/* eslint-disable padding-line-between-statements */
 import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
-
-// Helper function to decode the user from the cookie
-function getUserFromCookies(request: NextRequest) {
-  const userCookie = request.cookies.get("user");
-
-  if (userCookie) {
-    try {
-      // Access the value of the cookie and parse it
-      return JSON.parse(userCookie.value);
-    } catch (error) {
-      console.error("Error parsing user cookie:", error);
-    }
-  }
-
-  return null;
-}
+import { getCurrenUser } from "./services/AuthService";
 
 // Define routes that don't require authentication
 const AuthRoutes = ["/login", "/register"];
@@ -29,12 +16,10 @@ const roleBasedRoute = {
   CUSTOMER: [/^\/customer/],
 };
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Get the user from cookies
-  const user = getUserFromCookies(request);
-  // console.log(user);
+  const user = await getCurrenUser();
 
   // If there's no user and the path is not part of the AuthRoutes, redirect to login
   if (!user) {
@@ -59,5 +44,19 @@ export function middleware(request: NextRequest) {
 
 // Configure the routes to match
 export const config = {
-  matcher: ["/admin", "/admin/dashboard", "/customer", "/vendor"],
+  matcher: [
+    "/admin",
+    "/admin/:page*",
+    // "/admin/dashboard",
+    // "/admin/shops",
+    // "/admin/users",
+    "/customer",
+    "/customer/:page*",
+    "/vendor",
+    "/vendor/:page*",
+    // "/vendor/create-shop",
+    // "/vendor/create-product",
+    // "/vendor/my-shop",
+    // "/vendor/total-orders",
+  ],
 };

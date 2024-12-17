@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable padding-line-between-statements */
 "use client";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";

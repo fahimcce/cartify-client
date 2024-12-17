@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable import/order */
 "use client";
 
 import { useAuth } from "@/src/context/AuthContext";
@@ -30,18 +32,30 @@ export default function DropDownMenu() {
       <DropdownMenu aria-label="User Menu">
         {user ? (
           <>
-            <DropdownItem
-              onPress={() => handleNavigation("/admin/dashboard")}
-              key="dashboard"
-            >
-              Dashboard
-            </DropdownItem>
-            <DropdownItem
-              onPress={() => handleNavigation("/customer")}
-              key="customer"
-            >
-              Customer
-            </DropdownItem>
+            {user?.role === "ADMIN" && (
+              <DropdownItem
+                onPress={() => handleNavigation("/admin")}
+                key="dashboard"
+              >
+                Admin Dashboard
+              </DropdownItem>
+            )}
+            {user?.role === "VENDOR" && (
+              <DropdownItem
+                onPress={() => handleNavigation("/vendor")}
+                key="vendor"
+              >
+                Vendor Dashboard
+              </DropdownItem>
+            )}
+            {user?.role === "CUSTOMER" && (
+              <DropdownItem
+                onPress={() => handleNavigation("/customer")}
+                key="customer"
+              >
+                Customer Dashboard
+              </DropdownItem>
+            )}
             <DropdownItem
               onPress={() => handleNavigation("/products")}
               key="products"

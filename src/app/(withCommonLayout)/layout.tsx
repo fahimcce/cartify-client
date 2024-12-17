@@ -1,3 +1,5 @@
+/* eslint-disable import/order */
+
 import { Navbar } from "@/src/components/navbar";
 import React from "react";
 
