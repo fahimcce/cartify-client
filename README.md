@@ -50,16 +50,16 @@ The application is built for scalability, high performance, and an intuitive use
    ```
 2. **Add .env file**:
    ```bash
-NEXT_PUBLIC_BASE_API=
-NEXT_PUBLIC_PUBLISHABLE_KE
-NEXT_PUBLIC_Cloud_Name=
-NEXT_PUBLIC_Api_Key=
-NEXT_PUBLIC_Api_Secret=
-NEXT_PUBLIC_UpLoad_preset=
+      NEXT_PUBLIC_BASE_API=
+      NEXT_PUBLIC_PUBLISHABLE_KE
+      NEXT_PUBLIC_Cloud_Name=
+      NEXT_PUBLIC_Api_Key=
+      NEXT_PUBLIC_Api_Secret=
+      NEXT_PUBLIC_UpLoad_preset=
    ```
   3. **others Command**:
-``` bash
+   ``` bash
     npm install
     npm run dev
-```
+   ```
    
