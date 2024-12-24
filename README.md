@@ -1,53 +1,65 @@
-# Next.js & NextUI Template
+# **Cartify**
 
-This is a template for creating applications using Next.js 14 (app directory) and NextUI (v2).
+**Cartify** is a modern e-commerce platform designed to provide a seamless online shopping experience for users, vendors, and administrators.  
+The application is built for scalability, high performance, and an intuitive user experience.
 
-[Try it on CodeSandbox](https://githubbox.com/nextui-org/next-app-template)
+---
 
-## Technologies Used
+## **Live URL**
 
-- [Next.js 14](https://nextjs.org/docs/getting-started)
-- [NextUI v2](https://nextui.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Tailwind Variants](https://tailwind-variants.org)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Framer Motion](https://www.framer.com/motion/)
-- [next-themes](https://github.com/pacocoursey/next-themes)
+- **Frontend**: [Cartify Frontend](https://cartify-murex.vercel.app/)
+- **Backend**: [Cartify Backend](https://cartify-server.vercel.app/)
 
-## How to Use
+---
 
-### Use the template with create-next-app
+## **Technology Stack & Packages**
 
-To create a new project based on this template using `create-next-app`, run the following command:
+### **Frontend**
 
-```bash
-npx create-next-app -e https://github.com/nextui-org/next-app-template
-```
+- React.js
+- Next.js
+- Redux.js (State Management)
+- Tailwind CSS / Styled Components
 
-### Install dependencies
+### **Backend**
 
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
+- Node.js
+- Express.js
 
-```bash
-npm install
-```
+### **Database**
 
-### Run the development server
+- PostgreSQL
 
-```bash
-npm run dev
-```
+### **Third-Party Integrations**
 
-### Setup pnpm (optional)
+- Stripe (Payment Gateway)
+- Cloudinary (File Storage)
 
-If you are using `pnpm`, you need to add the following code to your `.npmrc` file:
+### **Other Tools**
 
-```bash
-public-hoist-pattern[]=*@nextui-org/*
-```
+- JWT (Authentication)
+- Bcrypt.js (Password Hashing)
 
-After modifying the `.npmrc` file, you need to run `pnpm install` again to ensure that the dependencies are installed correctly.
+---
 
-## License
+## **Setup Instructions**
 
-Licensed under the [MIT license](https://github.com/nextui-org/next-app-template/blob/main/LICENSE).
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/fahimcce/cartify-bakend.git
+   ```
+2. **Add .env file**:
+   ```bash
+      NEXT_PUBLIC_BASE_API=
+      NEXT_PUBLIC_PUBLISHABLE_KE
+      NEXT_PUBLIC_Cloud_Name=
+      NEXT_PUBLIC_Api_Key=
+      NEXT_PUBLIC_Api_Secret=
+      NEXT_PUBLIC_UpLoad_preset=
+   ```
+  3. **others Command**:
+   ``` bash
+    npm install
+    npm run dev
+   ```
+   
