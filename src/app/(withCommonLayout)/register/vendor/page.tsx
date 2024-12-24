@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable padding-line-between-statements */
@@ -8,6 +9,7 @@ import { useState, useRef } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { uploadImageToCloudinary } from "@/src/utils/uploadToCloudinary";
 
 export default function VendorRegister() {
   const [loading, setLoading] = useState(false);
@@ -24,20 +26,17 @@ export default function VendorRegister() {
     const imageFile = formData.get("image") as File;
 
     try {
-      const requestData = new FormData();
-      requestData.append("file", imageFile); // Attach the file for profilePhoto
-      requestData.append(
-        "data",
-        JSON.stringify({
-          password: formData.get("password"),
-          vendor: {
-            name: formData.get("name"),
-            email: formData.get("email"),
-            contactNumber: formData.get("contactNumber"),
-            address: formData.get("address"),
-          },
-        })
-      );
+      const profilePhoto = await uploadImageToCloudinary(imageFile);
+      const requestData = {
+        password: formData.get("password"),
+        vendor: {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          contactNumber: formData.get("contactNumber"),
+          address: formData.get("address"),
+          profilePhoto,
+        },
+      };
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_API}/user/create-vendor`,
@@ -59,8 +58,6 @@ export default function VendorRegister() {
         }, 2000);
       }
     } catch (error: any) {
-      setError("Something went wrong.");
-      // Show error toast with the message from the backend, if available
       toast.error("Something went wrong.Try with another email");
     } finally {
       setLoading(false);

@@ -9,6 +9,8 @@ import { Providers } from "../lib/Providers";
 import { AuthProvider } from "../context/AuthContext";
 import GProvider from "../providers/Provider";
 import ScrollToTop from "../components/Shared/ScrollToTop";
+import { CartProvider } from "../hook/useCart";
+import CartIcon from "../components/Shared/CartIcon";
 
 export const metadata: Metadata = {
   title: {
@@ -47,7 +49,10 @@ export default function RootLayout({
             <Providers
               themeProps={{ attribute: "class", defaultTheme: "dark" }}
             >
-              {children}
+              <CartProvider>
+                {children}
+                <CartIcon />
+              </CartProvider>
             </Providers>
           </AuthProvider>
         </GProvider>

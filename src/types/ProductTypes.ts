@@ -1,4 +1,3 @@
-
 export interface IProduct {
   id: string;
   name: string;
@@ -12,6 +11,7 @@ export interface IProduct {
   updatedAt: string;
   shopId: string;
   customerId: any;
+  quantity: number;
   shop: IShop;
 }
 

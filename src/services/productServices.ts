@@ -5,15 +5,12 @@ import envConfig from "../config/envConfig";
 import { delay } from "../utils/delay";
 
 export const getAllProducts = async () => {
-  const baseApi = envConfig.baseApi || "https://cartify-server.vercel.app/api";
-
+  const baseApi = envConfig.baseApi;
   try {
     const res = await fetch(`${baseApi}/products`);
-
     if (!res.ok) {
       throw new Error(`Failed to fetch products: ${res.statusText}`);
     }
-
     await delay(1000);
     const data = await res.json();
     return data;

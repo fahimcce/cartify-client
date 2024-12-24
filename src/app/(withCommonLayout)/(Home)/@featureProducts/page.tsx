@@ -14,8 +14,8 @@ export default async function featureProducts() {
           Explore the products you’ll love the most
         </p>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-        {products.data.map((product: IProduct) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {products.data.slice(0, 6).map((product: IProduct) => (
           <FeatureCard key={product.id} product={product} />
         ))}
       </div>

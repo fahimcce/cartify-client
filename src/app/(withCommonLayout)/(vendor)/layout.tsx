@@ -9,7 +9,7 @@ interface VendorLayoutProps {
   children: ReactNode;
 }
 
-const AdminLayout: FC<VendorLayoutProps> = ({ children }) => {
+const VendorLayout: FC<VendorLayoutProps> = ({ children }) => {
   const pathname = usePathname(); // Get the current path
 
   // Only show sidebar on specific pages (e.g., '/admin/dashboard', '/admin/users')
@@ -27,4 +27,4 @@ const AdminLayout: FC<VendorLayoutProps> = ({ children }) => {
   );
 };
 
-export default AdminLayout;
+export default VendorLayout;

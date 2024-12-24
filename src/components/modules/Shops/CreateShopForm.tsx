@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 
+import { uploadImageToCloudinary } from "@/src/utils/uploadToCloudinary";
+
 export default function CreateShopPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -32,18 +34,14 @@ export default function CreateShopPage() {
     const imageFile = formData.get("image") as File;
 
     try {
-      const requestData = new FormData();
-      requestData.append("file", imageFile); // Attach the file for shop image
-      requestData.append(
-        "data",
-        JSON.stringify({
-          shopName: formData.get("shopName"),
-          address: formData.get("address"),
-          description: formData.get("description"),
-        })
-      );
+      const shopLogo = await uploadImageToCloudinary(imageFile);
+      const requestData = {
+        shopName: formData.get("shopName"),
+        address: formData.get("address"),
+        description: formData.get("description"),
+        shopLogo,
+      };
 
-      // Get the token from localStorage or wherever it's stored
       const token = getAuthToken();
 
       const response = await axios.post(
@@ -51,28 +49,18 @@ export default function CreateShopPage() {
         requestData,
         {
           headers: {
-            Authorization: `${token}`, // Add the token to the Authorization header
+            Authorization: `${token}`,
           },
         }
       );
-
-      console.log("Response from backend:", response.data);
-
       if (response.data.success) {
-        // Show success toast
         toast.success("Shop created successfully! Redirecting...");
-
-        // Clear the form inputs
         formRef.current?.reset();
-
-        // Navigate to the shop listing page or shop dashboard after a short delay
         setTimeout(() => {
-          router.push("/vendor/my-shop"); // Replace with the actual route for shop listing
+          router.push("/vendor/my-shop");
         }, 2000);
       }
     } catch (error: any) {
-      setError("Something went wrong.");
-      // Show error toast with the message from the backend, if available
       toast.error("Something went wrong. Try again later.");
     } finally {
       setLoading(false);

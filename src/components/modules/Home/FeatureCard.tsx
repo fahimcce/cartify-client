@@ -1,39 +1,79 @@
+/* eslint-disable react/jsx-sort-props */
 /* eslint-disable import/order */
 "use client";
+
+import { useCart } from "@/src/hook/useCart";
 import { IProduct } from "@/src/types/ProductTypes";
-import { Button } from "@nextui-org/button";
-import { Card, CardFooter, CardHeader } from "@nextui-org/card";
-import { Image } from "@nextui-org/react";
+import { Card, CardBody, CardHeader } from "@nextui-org/card";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function FeatureCard({ product }: { product: IProduct }) {
+  const { addToCart } = useCart();
+  const router = useRouter();
+
+  const handleBuyNow = () => {
+    addToCart(product);
+    router.push("/cart");
+  };
+
+  const handleDetailsClick = () => {
+    router.push(`/products/details/${product.id}`);
+  };
+
   return (
-    <Card isFooterBlurred className="h-[400px] relative">
-      <CardHeader className="absolute z-10 top-1 flex-col items-start">
-        <p className="text-tiny text-default-600 uppercase font-bold">
-          In Stock : {product.inventoryCount}
-        </p>
-        <h4 className="text-red font-medium text-2xl">{product.name}</h4>
-      </CardHeader>
-
-      {/* Price Section */}
-      <div className="absolute top-2 right-2 bg-black text-white text-sm px-3 py-1 rounded-full z-20 shadow-md">
-        ${product.price}
-      </div>
-
-      <Image
-        removeWrapper
-        alt={product.description}
-        className="z-0 w-full h-64 object-cover"
-        src={product.images}
-      />
-      <CardFooter className="absolute bg-black/30 bottom-0 border-t-1 border-zinc-100/50 z-10 justify-between">
-        <div>
-          <p className="text-white text-tiny">{product.description}</p>
+    <div className="p-4">
+      <Card className="w-[350px] h-[400px] hover:shadow-lg transition-shadow border rounded-lg flex flex-col justify-between relative">
+        {/* Card Header */}
+        <CardHeader className="pb-0 pt-4 px-4">
+          <p className="text-lg font-bold truncate">{product.name}</p>
+        </CardHeader>
+        <div className="absolute top-2 right-2 bg-black text-white text-xs font-semibold py-1 px-3 rounded-full">
+          ${product.price}
         </div>
-        <Button className="text-tiny" color="primary" radius="full" size="sm">
-          Buy Now
-        </Button>
-      </CardFooter>
-    </Card>
+
+        {/* Card Body */}
+        <CardBody className="overflow-hidden flex justify-center relative">
+          {product.images ? (
+            <Image
+              src={product.images}
+              alt={product.name}
+              width={340} // Matches card width
+              height={150}
+              className="rounded-lg object-cover"
+            />
+          ) : (
+            <div className="w-[340px] h-[150px] bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
+              No Image
+            </div>
+          )}
+          <p className="text-sm text-gray-600 mt-1">
+            In Stock: {product.inventoryCount}
+          </p>
+        </CardBody>
+
+        {/* Button Row */}
+        <div className="flex justify-between px-4 pb-4">
+          <button
+            className="bg-green-500 text-white py-2 px-3 rounded hover:bg-green-600 transition"
+            onClick={handleBuyNow}
+          >
+            Buy Now
+          </button>
+          <button
+            className="bg-blue-500 text-white py-2 px-3 rounded hover:bg-blue-600 transition"
+            onClick={() => addToCart(product)}
+          >
+            Add to Cart
+          </button>
+          <button
+            className="bg-gray-500 text-white py-2 px-3 rounded hover:bg-gray-600 transition"
+            onClick={handleDetailsClick}
+          >
+            Details
+          </button>
+        </div>
+      </Card>
+    </div>
   );
 }

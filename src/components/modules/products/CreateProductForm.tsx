@@ -8,6 +8,7 @@
 import { useState, useRef } from "react";
 import { toast } from "sonner";
 import { createProduct } from "@/src/services/vendor/vendorServices";
+import { uploadImageToCloudinary } from "@/src/utils/uploadToCloudinary";
 
 export default function CreateProductPage() {
   const [loading, setLoading] = useState(false);
@@ -17,13 +18,15 @@ export default function CreateProductPage() {
     event.preventDefault();
     setLoading(true);
     const formData = new FormData(event.currentTarget);
+    const imageFile = formData.get("image") as File;
+    const images = await uploadImageToCloudinary(imageFile);
     const productData = {
       name: formData.get("name") as string,
       description: formData.get("description") as string,
       price: parseFloat(formData.get("price") as string),
       inventoryCount: parseInt(formData.get("inventoryCount") as string, 10),
       discount: parseFloat(formData.get("discount") as string),
-      imageFile: formData.get("image") as File,
+      images,
     };
     try {
       await createProduct(productData);

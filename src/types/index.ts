@@ -45,6 +45,7 @@ export type Tshop = {
   updatedAt: string;
   vendorId: string;
   vendor: TVendor;
+  follower: number;
 };
 
 export type TVendor = {

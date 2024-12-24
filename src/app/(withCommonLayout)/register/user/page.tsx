@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable no-console */
@@ -9,36 +10,33 @@ import { useState, useRef } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { uploadImageToCloudinary } from "@/src/utils/uploadToCloudinary";
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-  const formRef = useRef<HTMLFormElement>(null); // For resetting the form
+  const formRef = useRef<HTMLFormElement>(null);
 
   const handlePostSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
     setError("");
-
     const formData = new FormData(event.currentTarget);
     const imageFile = formData.get("image") as File;
 
     try {
-      const requestData = new FormData();
-      requestData.append("file", imageFile); // Attach the file for profilePhoto
-      requestData.append(
-        "data",
-        JSON.stringify({
-          password: formData.get("password"),
-          customer: {
-            name: formData.get("name"),
-            email: formData.get("email"),
-            contactNumber: formData.get("contactNumber"),
-            address: formData.get("address"),
-          },
-        })
-      );
+      const profilePhoto = await uploadImageToCloudinary(imageFile);
+      const requestData = {
+        password: formData.get("password"),
+        customer: {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          contactNumber: formData.get("contactNumber"),
+          address: formData.get("address"),
+          profilePhoto,
+        },
+      };
 
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_API}/user/create-customer`,
@@ -48,21 +46,12 @@ export default function RegisterPage() {
       console.log("Response from backend:", response.data);
 
       if (response.data.success) {
-        // Show success toast
         toast.success("Customer created successfully! Redirecting to login...");
-
-        // Clear the form inputs
         formRef.current?.reset();
-
-        // Navigate to login page after a short delay
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
+        setTimeout(() => router.push("/login"), 2000);
       }
     } catch (error: any) {
-      setError("Something went wrong.");
-      // Show error toast with the message from the backend, if available
-      toast.error("Something went wrong.Try with another email");
+      toast.error(error.message || "Something went wrong. Try again.");
     } finally {
       setLoading(false);
     }

@@ -13,8 +13,8 @@ export const siteConfig = {
       href: "/products",
     },
     {
-      label: "Blog",
-      href: "/blog",
+      label: "Shops",
+      href: "/shops/all-shops",
     },
     {
       label: "About",
@@ -28,15 +28,19 @@ export const siteConfig = {
     },
     {
       label: "Products",
-      href: "/product",
+      href: "/products",
     },
     {
-      label: "Blog",
-      href: "/blog",
+      label: "Shops",
+      href: "/shops/all-shops",
     },
     {
       label: "About",
       href: "/about",
+    },
+    {
+      label: "Login",
+      href: "/login",
     },
   ],
 };

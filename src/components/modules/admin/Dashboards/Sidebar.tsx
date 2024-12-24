@@ -138,6 +138,19 @@ const Sidebar: FC = () => {
               </li>
             </>
           )}
+          {user?.role === "CUSTOMER" && (
+            <>
+              <li>
+                <button
+                  onClick={() => handleNavigation("/customer/my-orders")}
+                  className="flex items-center p-4 hover:bg-gray-700 rounded-md transition-all duration-200"
+                >
+                  <AiOutlineDashboard className="mr-4 text-xl" />
+                  <span className={isOpen ? "" : "hidden"}>My Orders</span>
+                </button>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
     </div>

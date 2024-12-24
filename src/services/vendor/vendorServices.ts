@@ -38,24 +38,18 @@ export const createProduct = async (productData: {
   price: number;
   inventoryCount: number;
   discount: number;
-  imageFile: File;
+  images: string;
 }) => {
   const token = getAuthToken();
   if (!token) throw new Error("No authentication token found.");
-
-  const requestData = new FormData();
-  requestData.append("file", productData.imageFile);
-  requestData.append(
-    "data",
-    JSON.stringify({
-      name: productData.name,
-      description: productData.description,
-      price: productData.price,
-      inventoryCount: productData.inventoryCount,
-      discount: productData.discount,
-    })
-  );
-
+  const requestData = {
+    name: productData.name,
+    description: productData.description,
+    price: productData.price,
+    inventoryCount: productData.inventoryCount,
+    discount: productData.discount,
+    images: productData.images,
+  };
   const response = await axios.post(
     `${process.env.NEXT_PUBLIC_BASE_API}/products/create-product`,
     requestData,
