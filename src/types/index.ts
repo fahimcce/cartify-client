@@ -59,3 +59,8 @@ export type TVendor = {
   createdAt: string;
   updatedAt: string;
 };
+export type Tcategory = {
+  id: string;
+  name: string;
+  categoryImage: string;
+};

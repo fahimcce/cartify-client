@@ -1,16 +1,19 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable import/order */
-/* eslint-disable padding-line-between-statements */
 /* eslint-disable react/jsx-sort-props */
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable no-console */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 "use client";
-import { useAuth } from "@/src/context/AuthContext";
-import { Tshop } from "@/src/types";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import Image from "next/image";
+
+import { useAuth } from "@/src/context/AuthContext";
+import { Tshop } from "@/src/types";
+import {
+  followShop,
+  unfollowShop,
+} from "@/src/services/ShopServices/ShopService";
 
 interface ShopCardProps {
   shop: Tshop;
@@ -19,7 +22,7 @@ interface ShopCardProps {
 const ShopPage: React.FC<ShopCardProps> = ({ shop }) => {
   const { user } = useAuth();
   const router = useRouter();
-  const { id, shopName, shopLogo, address, vendor } = shop;
+  const { id, shopName, address, vendor } = shop;
 
   const [isFollowed, setIsFollowed] = useState(false);
   const [followerCount, setFollowerCount] = useState(shop.follower);
@@ -33,6 +36,7 @@ const ShopPage: React.FC<ShopCardProps> = ({ shop }) => {
         );
         const followedShops = response.data.data;
         const alreadyFollowed = followedShops.some((s: Tshop) => s.id === id);
+
         setIsFollowed(alreadyFollowed);
       } catch (error) {
         toast.error("Unable to check follow status");
@@ -44,46 +48,27 @@ const ShopPage: React.FC<ShopCardProps> = ({ shop }) => {
     }
   }, [user?.id, id]);
 
-  // Handle follow shop
   const handleFollow = async () => {
-    try {
-      const requestData = {
-        customerId: user.id,
-        shopId: id,
-      };
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_API}/shops/follow`,
-        requestData
-      );
-      if (response.data.success) {
-        toast.success(`Followed ${shopName} successfully`);
-        setIsFollowed(true); // Update follow state
-        setFollowerCount((prev) => prev + 1); // Increment follower count dynamically
-      }
-    } catch (error: any) {
-      toast.error("Unable to follow the shop");
+    const response = await followShop(user.id, id);
+
+    if (response.success) {
+      setFollowerCount((prev) => prev + 1);
+      setIsFollowed(true);
+      toast.success(`Followed ${shopName} successfully`);
+    } else {
+      toast.error(response.error || "Unable to follow the shop");
     }
   };
 
-  // Handle unfollow shop
   const handleUnfollow = async () => {
-    try {
-      const requestData = {
-        customerId: user.id,
-        shopId: id,
-      };
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_API}/shops/unfollow`,
-        requestData
-      );
-      if (response.data.success) {
-        toast.success(`Unfollowed ${shopName} successfully`);
-        setIsFollowed(false); // Update follow state
-        setFollowerCount((prev) => Math.max(prev - 1, 0)); // Decrement follower count dynamically
-      }
-    } catch (error: any) {
-      console.error("Error unfollowing the shop:", error);
-      toast.error("Unable to unfollow the shop");
+    const response = await unfollowShop(user.id, id);
+
+    if (response.success) {
+      setFollowerCount((prev) => Math.max(prev - 1, 0));
+      setIsFollowed(false);
+      toast.success(`UnFollow ${shopName} successfully`);
+    } else {
+      toast.error("Unable to Unfollow the shop");
     }
   };
 
@@ -94,10 +79,15 @@ const ShopPage: React.FC<ShopCardProps> = ({ shop }) => {
   return (
     <div className="border p-4 rounded-md shadow-md hover:shadow-lg transition">
       <div className="flex items-center mb-4">
-        <img
-          src={shopLogo}
+        <Image
+          src={
+            shop?.shopLogo ||
+            "https://img.freepik.com/premium-psd/3d-render-online-shopping-store_252008-3047.jpg"
+          }
           alt={`${shopName} logo`}
           className="w-16 h-16 object-cover rounded-full mr-4"
+          height={150}
+          width={250}
         />
         <h2 className="text-xl font-semibold">{shopName}</h2>
       </div>

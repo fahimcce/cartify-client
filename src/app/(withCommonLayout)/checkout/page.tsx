@@ -15,18 +15,17 @@ import { StripePaymentForm } from "@/src/components/UI/Stripeform";
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_PUBLISHABLE_KEY}`);
 
 const CheckoutPage = () => {
-  const { cart, totalPrice, clearCart } = useCart(); // Ensure `clearCart` is part of `useCart`
+  const { cart, totalPrice, clearCart } = useCart();
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const [coupon, setCoupon] = useState("");
   const [loading, setLoading] = useState(false);
   const [discount, setDiscount] = useState(0);
   const [finalTotal, setFinalTotal] = useState(totalPrice);
-  const [paymentStatus, setPaymentStatus] = useState("PENDING"); // Track payment status
-  const router = useRouter(); // Use for navigation
+  const [paymentStatus, setPaymentStatus] = useState("PENDING");
+  const router = useRouter();
 
-  // Move toast.dismiss() to useEffect
   useEffect(() => {
-    toast.dismiss(); // Ensure no lingering toasts when the component mounts
+    toast.dismiss();
   }, []);
 
   const handleCouponApply = () => {

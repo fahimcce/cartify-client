@@ -1,21 +1,21 @@
 import axios from "axios";
 
 import envConfig from "@/src/config/envConfig";
-import { delay } from "@/src/utils/delay";
+import axiosInstance from "@/src/lib/AxiosInstance";
 
 export const getAllShops = async () => {
-  const res = await fetch(`${envConfig.baseApi}/shops`);
+  try {
+    const response = await axiosInstance.get(`/shops`);
 
-  await delay(5000);
-
-  return res.json();
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const getSingleShop = async (id: string) => {
   try {
-    const response = await axios.get(
-      `${envConfig.baseApi}/shops/my-orders/${id}`
-    );
+    const response = await axiosInstance.get(`/shops/my-orders/${id}`);
 
     return response.data;
   } catch (error) {
@@ -33,15 +33,40 @@ export const getSingleShopProducts = async (id: string) => {
   }
 };
 
-export const unfollowShop = async (customerId: string, shopId: string) => {
+export const followShop = async (customerId: string, shopId: string) => {
   try {
-    const response = await axios.post(`${envConfig.baseApi}/shops/unfollow`, {
+    const response = await axiosInstance.post(`/shops/follow`, {
       customerId,
       shopId,
     });
 
-    return response.data;
-  } catch (error) {
-    throw error;
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch {
+    return {
+      success: false,
+      error: "An error occurred",
+    };
+  }
+};
+
+export const unfollowShop = async (customerId: string, shopId: string) => {
+  try {
+    const response = await axiosInstance.post(`/shops/unfollow`, {
+      customerId,
+      shopId,
+    });
+
+    return {
+      success: true,
+      data: response.data,
+    };
+  } catch {
+    return {
+      success: false,
+      error: "An error occurred",
+    };
   }
 };

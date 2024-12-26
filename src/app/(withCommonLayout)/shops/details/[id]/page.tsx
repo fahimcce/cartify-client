@@ -10,6 +10,7 @@ import { useParams } from "next/navigation";
 import { IProduct } from "@/src/types/ProductTypes";
 import { getSingleShopProducts } from "@/src/services/ShopServices/ShopService";
 import { useCart } from "@/src/hook/useCart";
+import LoadingBlur from "@/src/components/Shared/LoadingBlur";
 
 export default function ShopDetailsPage() {
   const [shop, setShop] = useState<any>(null);
@@ -20,21 +21,18 @@ export default function ShopDetailsPage() {
 
   useEffect(() => {
     const fetchShopDetails = async () => {
-      try {
-        const data = await getSingleShopProducts(id as string);
+      const data = await getSingleShopProducts(id as string);
 
-        setShop(data.data);
-      } catch (error) {
-        toast.error("Failed to fetch shop details");
-      } finally {
-        setLoading(false);
-      }
+      setShop(data.data);
+      setLoading(false);
+
+      if (!data) toast.error("Failed to fetch shop details");
     };
 
     fetchShopDetails();
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingBlur />;
 
   if (!shop) return <p>Shop not found!</p>;
 

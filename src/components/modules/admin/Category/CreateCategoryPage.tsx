@@ -1,35 +1,35 @@
 /* eslint-disable padding-line-between-statements */
-/* eslint-disable import/order */
 /* eslint-disable react/jsx-sort-props */
 "use client";
-
-import { createCategory } from "@/src/services/Category Services/CategoryServices";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
+import { createCategory } from "@/src/services/Category Services/CategoryServices";
+import { uploadImageToCloudinary } from "@/src/utils/uploadToCloudinary";
+
 export default function CreateCategoryPage() {
-  const [name, setName] = useState("");
-  const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name || !imageFile) {
-      toast.error("Please provide all required fields.");
-      return;
-    }
-
     setLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const imageFile = formData.get("image") as File;
+    const Photo = await uploadImageToCloudinary(imageFile);
+    const payload = {
+      name: formData.get("name") as string,
+      categoryImage: Photo,
+    };
     try {
-      await createCategory({ name, imageFile });
+      await createCategory(payload);
       toast.success("Category created successfully!");
-      router.push("/admin/category"); // Redirect to Categories page
-    } catch (error: any) {
-      toast.error(error.message || "Failed to create category.");
-    } finally {
+      router.push("/admin/category");
       setLoading(false);
+    } catch {
+      toast.error("Failed to create category.Please try again");
     }
   };
 
@@ -37,7 +37,9 @@ export default function CreateCategoryPage() {
     <div className="p-6 flex flex-col items-center">
       <h1 className="text-2xl font-bold mb-6">Create New Category</h1>
       <form
+        ref={formRef}
         onSubmit={handleSubmit}
+        encType="multipart/form-data"
         className="w-full max-w-md space-y-4 bg-white p-6 shadow rounded-md"
       >
         <div>
@@ -45,12 +47,10 @@ export default function CreateCategoryPage() {
             Category Name
           </label>
           <input
-            id="name"
+            name="name"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Enter category name"
-            className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full input input-bordered"
+            placeholder="Enter Category name"
             required
           />
         </div>
@@ -59,11 +59,10 @@ export default function CreateCategoryPage() {
             Category Image
           </label>
           <input
-            id="image"
+            name="image"
             type="file"
             accept="image/*"
-            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-            className="w-full p-2 border rounded-md"
+            className="w-full input input-bordered"
             required
           />
         </div>
