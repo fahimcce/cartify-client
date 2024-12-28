@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-sort-props */
+"use client";
 import Image from "next/image";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 import { Tcategory } from "@/src/types";
 import { deleteCategory } from "@/src/services/Category Services/CategoryServices";
@@ -12,6 +14,7 @@ interface CategoryCardProps {
 
 const CategoryCard: React.FC<CategoryCardProps> = ({ category, onDelete }) => {
   const { id, name, categoryImage } = category;
+  const router = useRouter();
 
   const handleDelete = async () => {
     try {
@@ -36,17 +39,25 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, onDelete }) => {
           }
           alt={name}
           width={150}
-          height={150}
-          className="rounded-md object-cover"
+          height={250}
+          className="rounded-md object-cover w-64 h-40"
         />
       </div>
       <h2 className="text-xl font-semibold mb-2 text-center">{name}</h2>
-      <button
-        onClick={handleDelete}
-        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-      >
-        Delete
-      </button>
+      <div className="flex justify-center bottom-0">
+        <button
+          onClick={handleDelete}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mx-2"
+        >
+          Delete
+        </button>
+        <button
+          onClick={() => router.push(`/admin/category/${category.id}`)}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Update
+        </button>
+      </div>
     </div>
   );
 };

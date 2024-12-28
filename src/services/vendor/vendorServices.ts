@@ -1,32 +1,10 @@
 /* eslint-disable padding-line-between-statements */
-import axios from "axios";
-import Cookies from "js-cookie";
+import axiosInstance from "@/src/lib/AxiosInstance";
 
-export interface TProduct {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  inventoryCount: number;
-  images: string | null;
-  discount: number;
-}
-
-// Utility function to get authentication token
-const getAuthToken = () => Cookies.get("accessToken");
-
-// Function to fetch products
-export const fetchProducts = async (): Promise<TProduct[]> => {
-  const token = getAuthToken();
-  if (!token) throw new Error("No authentication token found.");
-
-  const response = await axios.get(
-    `${process.env.NEXT_PUBLIC_BASE_API}/vendor/my-shop-products`,
-    { headers: { Authorization: `${token}` } }
-  );
-
+export const fetchProducts = async () => {
+  const response = await axiosInstance.get(`/vendor/my-shop-products`);
   if (response.data.success) {
-    return response.data.data; // Return the product list
+    return response.data.data;
   } else {
     throw new Error("Failed to load products.");
   }
@@ -40,8 +18,6 @@ export const createProduct = async (productData: {
   discount: number;
   images: string;
 }) => {
-  const token = getAuthToken();
-  if (!token) throw new Error("No authentication token found.");
   const requestData = {
     name: productData.name,
     description: productData.description,
@@ -50,33 +26,17 @@ export const createProduct = async (productData: {
     discount: productData.discount,
     images: productData.images,
   };
-  const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_BASE_API}/products/create-product`,
-    requestData,
-    {
-      headers: {
-        Authorization: `${token}`,
-      },
-    }
+  const response = await axiosInstance.post(
+    `/products/create-product`,
+    requestData
   );
-
   if (!response.data.success) {
     throw new Error(response.data.message || "Failed to create product.");
   }
 };
 
-export const deleteProduct = async (id: string): Promise<void> => {
-  const token = getAuthToken();
-  if (!token) throw new Error("No authentication token found.");
-
-  const response = await axios.delete(
-    `${process.env.NEXT_PUBLIC_BASE_API}/products/${id}`,
-    {
-      headers: {
-        Authorization: `${token}`,
-      },
-    }
-  );
+export const deleteProduct = async (id: string) => {
+  const response = await axiosInstance.delete(`/products/${id}`);
 
   if (!response.data.success) {
     throw new Error(response.data.message || "Failed to delete product.");
@@ -92,9 +52,7 @@ export const updateProduct = async (
     inventoryCount?: number;
     discount?: number;
   }
-): Promise<void> => {
-  const token = getAuthToken();
-  if (!token) throw new Error("No authentication token found.");
+) => {
   const payload = {
     name: updatedData.name,
     description: updatedData.description,
@@ -102,40 +60,19 @@ export const updateProduct = async (
     inventoryCount: updatedData.inventoryCount,
     discount: updatedData.discount,
   };
-  const response = await axios.patch(
-    `${process.env.NEXT_PUBLIC_BASE_API}/products/${id}`,
-    payload,
-    {
-      headers: {
-        Authorization: `${token}`,
-        "Content-Type": "application/json", // Explicitly set JSON header
-      },
-    }
-  );
+  const response = await axiosInstance.patch(`/products/${id}`, payload);
 
   if (!response.data.success) {
     throw new Error(response.data.message || "Failed to update product.");
   }
 };
 
-// Service function to duplicate a product
 export const duplicateProduct = async (id: string) => {
-  const token = getAuthToken();
-  if (!token) throw new Error("No authentication token found.");
-
-  const response = await axios.post(
-    `${process.env.NEXT_PUBLIC_BASE_API}/products/create-duplicate-product/${id}`,
-    {},
-    {
-      headers: {
-        Authorization: `${token}`,
-      },
-    }
+  const response = await axiosInstance.post(
+    `/products/create-duplicate-product/${id}`
   );
-
   if (!response.data.success) {
     throw new Error(response.data.message || "Failed to duplicate product.");
   }
-
-  return response.data.data; // Return the newly created duplicate product
+  return response.data.data;
 };

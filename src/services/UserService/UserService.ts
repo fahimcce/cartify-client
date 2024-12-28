@@ -1,62 +1,45 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable padding-line-between-statements */
-/* eslint-disable import/order */
-import envConfig from "@/src/config/envConfig";
-import { delay } from "@/src/utils/delay";
-import axios from "axios";
-import Cookies from "js-cookie";
-
-const getAuthToken = () => Cookies.get("accessToken");
+import axiosInstance from "@/src/lib/AxiosInstance";
 
 export const getAllUsers = async () => {
-  const res = await fetch(`${envConfig.baseApi}/user`);
-
-  await delay(5000);
-
-  return res.json();
+  try {
+    const response = await axiosInstance.get("/user");
+    return response.data.data;
+  } catch {
+    throw new Error("Failed to fatch User.");
+  }
 };
 
 export const updateUserStatus = async (id: string, status: string) => {
-  const token = getAuthToken();
-  if (!token) throw new Error("No authentication token found.");
-
   const payload = { status };
-
-  const response = await axios.patch(
-    `${envConfig.baseApi}/user/${id}`,
-    payload,
-    {
-      headers: {
-        Authorization: `${token}`,
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  return response.data; // Ensure correct data format
+  try {
+    const response = await axiosInstance.patch(`/user/${id}`, payload);
+    return response.data;
+  } catch {
+    throw new Error("Failed to fatch User.");
+  }
 };
 
 export const updateShopRestriction = async (
   id: string,
   payload: { restricted: boolean }
-): Promise<any> => {
-  const token = getAuthToken();
-  if (!token) throw new Error("No authentication token found.");
-
+) => {
   try {
-    const response = await axios.patch(
-      `${process.env.NEXT_PUBLIC_BASE_API}/admin/restricted/${id}`,
-      payload,
-      {
-        headers: {
-          Authorization: `${token}`,
-        },
-      }
+    const response = await axiosInstance.patch(
+      `/admin/restricted/${id}`,
+      payload
     );
-
     return response.data;
-  } catch (error: any) {
-    throw new Error(
-      error.response?.data?.message || "Failed to update restriction."
-    );
+  } catch {
+    throw new Error("Failed to update restriction.");
+  }
+};
+
+export const deleteShop = async (id: string) => {
+  try {
+    const response = await axiosInstance.delete(`/shops/${id}`);
+    return response.data?.message;
+  } catch {
+    throw new Error("Failed to delete Shop.");
   }
 };

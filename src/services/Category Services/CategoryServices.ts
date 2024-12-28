@@ -1,4 +1,5 @@
 import axiosInstance from "@/src/lib/AxiosInstance";
+import { Tcategory } from "@/src/types";
 
 export const createCategory = async (categoryData: {
   name: string;
@@ -32,4 +33,16 @@ export const deleteCategory = async (id: string) => {
   }
 
   return response.data?.message;
+};
+export const updateCategory = async (
+  id: string,
+  payload: Partial<Tcategory>
+) => {
+  const response = await axiosInstance.patch(`/category/${id}`, payload);
+
+  if (!response.data.success) {
+    throw new Error(response.data.message || "Failed to Update Category.");
+  }
+
+  return response?.data?.data;
 };

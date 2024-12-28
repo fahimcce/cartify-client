@@ -10,12 +10,12 @@ import ProductCard from "../../UI/ProductCard";
 import {
   deleteProduct,
   fetchProducts,
-  TProduct,
 } from "@/src/services/vendor/vendorServices";
 import { toast } from "sonner";
+import { IProduct } from "@/src/types/ProductTypes";
 
 export default function ShopProducts() {
-  const [products, setProducts] = useState<TProduct[]>([]);
+  const [products, setProducts] = useState<IProduct[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -48,7 +48,7 @@ export default function ShopProducts() {
     }
   };
 
-  const handleDuplicateSuccess = (newProduct: TProduct) => {
+  const handleDuplicateSuccess = (newProduct: IProduct) => {
     setProducts((prevProducts) => [newProduct, ...prevProducts]);
   };
 

@@ -1,4 +1,3 @@
-/* eslint-disable padding-line-between-statements */
 "use server";
 
 import { jwtDecode } from "jwt-decode";
@@ -11,6 +10,7 @@ export const getCurrenUser = async () => {
 
   if (accessToken) {
     decodedToken = await jwtDecode(accessToken as string);
+
     return {
       name: decodedToken?.name,
       email: decodedToken?.email,
@@ -19,5 +19,6 @@ export const getCurrenUser = async () => {
       profilePhoto: decodedToken?.profilePhoto,
     };
   }
+
   return decodedToken;
 };

@@ -5,7 +5,10 @@
 /* eslint-disable no-console */
 "use client";
 
-import { updateShopRestriction } from "@/src/services/UserService/UserService";
+import {
+  deleteShop,
+  updateShopRestriction,
+} from "@/src/services/UserService/UserService";
 import { Tshop } from "@/src/types";
 import { useState } from "react";
 
@@ -35,8 +38,16 @@ const ShopCard: React.FC<ShopCardProps> = ({ shop }) => {
     }
   };
 
-  const handleDelete = () => {
-    console.log(`Delete shop: ${shopName}`);
+  const handleDelete = async () => {
+    try {
+      const response = await deleteShop(id);
+      if (response) {
+        toast.success("Deleted Category Successfully");
+        window.location.reload();
+      }
+    } catch {
+      toast.error("Something went wrong");
+    }
   };
 
   return (

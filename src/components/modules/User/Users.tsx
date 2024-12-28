@@ -5,14 +5,14 @@ import UsersTable from "./UsersTable";
 
 // Server-side component
 export default async function Users() {
-  const users = await getAllUsers(); // Fetch users data
+  const users = await getAllUsers();
 
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-4">
-        Total Users: {users.data.length}
+        Total Users: {users?.length}
       </h1>
-      <UsersTable key={users.data[0]?.id} users={users.data} />
+      <UsersTable key={users.id} users={users} />
     </div>
   );
 }
