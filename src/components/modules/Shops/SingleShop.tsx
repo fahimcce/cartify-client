@@ -2,13 +2,20 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 
+import { Spinner } from "@nextui-org/spinner";
+
 import { useGetMyshopQuery } from "@/src/redux/features/shop/shopApi";
 
 export default function VendorShop() {
   const { data, isLoading, error } = useGetMyshopQuery(undefined);
-  const shop = data?.data; // Extracting the actual shop data from the API response
+  const shop = data?.data;
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center h-64">
+        <Spinner size="lg" color="primary" label="Loading Shop..." />
+      </div>
+    );
   if (error) {
     return (
       <div
@@ -26,37 +33,29 @@ export default function VendorShop() {
           padding: "20px",
         }}
       >
-        <p>⚠️ You have No shop</p>
+        <p>⚠️ You have No shop . Please create a shop</p>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center justify-between p-6 bg-white rounded-lg shadow-md">
-      {/* Left Side: Shop Details */}
-      <div>
-        <h1 className="text-2xl font-bold mb-2">Vendor Shop</h1>
+    <div className="flex flex-col md:flex-row items-center justify-between p-6 bg-white rounded-lg shadow-md">
+      <div className="w-1/3">
+        <img
+          src={shop.shopLogo}
+          alt={`${shop.shopName} Logo`}
+          className="object-cover rounded-lg"
+        />
+      </div>
+      <div className="mb-4 md:mb-0">
+        <h1 className="text-2xl font-bold mb-2">My Shop</h1>
         <p className="text-lg">
           <strong>Shop Name:</strong> {shop?.shopName || "N/A"}
-        </p>
-        <p className="text-lg">
-          <strong>Shop ID:</strong> {shop?.id || "N/A"}
         </p>
         <p className="text-lg">
           <strong>Address:</strong> {shop?.address || "Not Provided"}
         </p>
       </div>
-
-      {/* Right Side: Shop Logo */}
-      {shop?.shopLogo && (
-        <div>
-          <img
-            src={shop.shopLogo}
-            alt={`${shop.shopName} Logo`}
-            className="w-32 h-32 object-cover rounded-lg"
-          />
-        </div>
-      )}
     </div>
   );
 }

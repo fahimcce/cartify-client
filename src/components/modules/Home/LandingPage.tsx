@@ -24,8 +24,8 @@ export default function LandingPage() {
           </p>
           <div className="flex flex-col md:flex-row items-center gap-4">
             <div className="text-left">
-              <p className="text-lg font-semibold">Discount Price</p>
-              <p className="text-3xl font-bold text-default-800">$140.00</p>
+              <p className="text-lg font-semibold">Total Discount </p>
+              <p className="text-3xl font-bold text-default-800">$15000.00</p>
             </div>
             <button className="bg-black text-white px-6 py-3 rounded-lg shadow hover:bg-gray-800 transition">
               Shop Now

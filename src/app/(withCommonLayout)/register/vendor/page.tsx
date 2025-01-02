@@ -13,14 +13,12 @@ import { uploadImageToCloudinary } from "@/src/utils/uploadToCloudinary";
 
 export default function VendorRegister() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null); // For resetting the form
 
   const handlePostSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    setError("");
 
     const formData = new FormData(event.currentTarget);
     const imageFile = formData.get("image") as File;
@@ -43,21 +41,14 @@ export default function VendorRegister() {
         requestData
       );
 
-      //   console.log("Response from backend:", response.data);
-
       if (response.data.success) {
-        // Show success toast
         toast.success("Vendor Account created successfully! Go to login...");
-
-        // Clear the form inputs
         formRef.current?.reset();
-
-        // Navigate to login page after a short delay
         setTimeout(() => {
           router.push("/login");
         }, 2000);
       }
-    } catch (error: any) {
+    } catch {
       toast.error("Something went wrong.Try with another email");
     } finally {
       setLoading(false);

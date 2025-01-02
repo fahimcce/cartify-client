@@ -14,14 +14,13 @@ import { uploadImageToCloudinary } from "@/src/utils/uploadToCloudinary";
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
 
   const handlePostSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    setError("");
+
     const formData = new FormData(event.currentTarget);
     const imageFile = formData.get("image") as File;
 
@@ -43,15 +42,15 @@ export default function RegisterPage() {
         requestData
       );
 
-      console.log("Response from backend:", response.data);
-
       if (response.data.success) {
         toast.success("Customer created successfully! Redirecting to login...");
         formRef.current?.reset();
-        setTimeout(() => router.push("/login"), 2000);
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
       }
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong. Try again.");
+    } catch {
+      toast.error("Something went wrong. Try again.");
     } finally {
       setLoading(false);
     }
