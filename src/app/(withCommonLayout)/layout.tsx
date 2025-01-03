@@ -1,6 +1,7 @@
 /* eslint-disable import/order */
 
 import { Navbar } from "@/src/components/navbar";
+import Footer from "@/src/components/Shared/Footer";
 import React from "react";
 
 export default function CommonLayout({
@@ -14,6 +15,7 @@ export default function CommonLayout({
       <main className="container mx-auto max-w-7xl px-6 flex-grow">
         {children}
       </main>
+      <Footer />
     </div>
   );
 }

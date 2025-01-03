@@ -17,61 +17,53 @@ export default function FeatureCard({ product }: { product: IProduct }) {
     router.push("/cart");
   };
 
-  const handleDetailsClick = () => {
-    router.push(`/products/details/${product.id}`);
-  };
+  // const handleDetailsClick = () => {
+  //   router.push(`/products/details/${product.id}`);
+  // };
 
   return (
     <div className="p-4">
-      <Card className="w-[350px] h-[400px] hover:shadow-lg transition-shadow border rounded-lg flex flex-col justify-between relative">
-        {/* Card Header */}
-        <CardHeader className="pb-0 pt-4 px-4">
-          <p className="text-lg font-bold truncate">{product.name}</p>
+      <Card className="h-[300px] hover:shadow-lg transition-shadow border rounded-lg flex flex-col justify-between relative">
+        <CardHeader className="pb-0 pt-4 px-4 mt-2">
+          <p className="text-sm font-bold truncate">{product.name}</p>
         </CardHeader>
         <div className="absolute top-2 right-2 bg-black text-white text-xs font-semibold py-1 px-3 rounded-full">
           ${product.price}
         </div>
 
-        {/* Card Body */}
         <CardBody className="overflow-hidden flex justify-center relative">
-          {product.images ? (
-            <Image
-              src={product.images}
-              alt={product.name}
-              width={340} // Matches card width
-              height={150}
-              className="rounded-lg object-cover"
-            />
-          ) : (
-            <div className="w-[340px] h-[150px] bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
-              No Image
-            </div>
-          )}
+          <Image
+            src={product.images}
+            alt={product.name}
+            width={340}
+            height={150}
+            className="rounded-lg h-52 object-cover"
+          />
+
           <p className="text-sm text-gray-600 mt-1">
             In Stock: {product.inventoryCount}
           </p>
         </CardBody>
 
-        {/* Button Row */}
-        <div className="flex justify-between px-4 pb-4">
+        <div className="flex justify-between pb-2 px-2">
           <button
-            className="bg-green-500 text-white py-2 px-3 rounded hover:bg-green-600 transition"
+            className="bg-green-500 px-2 text-small text-white rounded hover:bg-green-600 transition"
             onClick={handleBuyNow}
           >
             Buy Now
           </button>
           <button
-            className="bg-blue-500 text-white py-2 px-3 rounded hover:bg-blue-600 transition"
+            className="bg-blue-500 text-white px-2  rounded hover:bg-blue-600 transition"
             onClick={() => addToCart(product)}
           >
             Add to Cart
           </button>
-          <button
-            className="bg-gray-500 text-white py-2 px-3 rounded hover:bg-gray-600 transition"
+          {/* <button
+            className="bg-gray-500 text-white  rounded hover:bg-gray-600 transition"
             onClick={handleDetailsClick}
           >
             Details
-          </button>
+          </button> */}
         </div>
       </Card>
     </div>

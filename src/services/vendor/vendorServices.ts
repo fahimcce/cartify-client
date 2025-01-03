@@ -1,5 +1,6 @@
 /* eslint-disable padding-line-between-statements */
 import axiosInstance from "@/src/lib/AxiosInstance";
+import { IProduct } from "@/src/types/ProductTypes";
 
 export const fetchProducts = async () => {
   const response = await axiosInstance.get(`/vendor/my-shop-products`);
@@ -10,28 +11,15 @@ export const fetchProducts = async () => {
   }
 };
 
-export const createProduct = async (productData: {
-  name: string;
-  description: string;
-  price: number;
-  inventoryCount: number;
-  discount: number;
-  images: string;
-}) => {
-  const requestData = {
-    name: productData.name,
-    description: productData.description,
-    price: productData.price,
-    inventoryCount: productData.inventoryCount,
-    discount: productData.discount,
-    images: productData.images,
-  };
-  const response = await axiosInstance.post(
-    `/products/create-product`,
-    requestData
-  );
-  if (!response.data.success) {
-    throw new Error(response.data.message || "Failed to create product.");
+export const createProduct = async (productData: IProduct) => {
+  try {
+    const response = await axiosInstance.post(
+      `/products/create-product`,
+      productData
+    );
+    return response.data;
+  } catch {
+    throw new Error("An unexpected error occurred while creating the product.");
   }
 };
 

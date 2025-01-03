@@ -1,18 +1,18 @@
 export interface IProduct {
-  id: string;
+  id?: string;
   name: string;
   description: string;
   inventoryCount: number;
   images: any;
   price: number;
-  discount: number;
-  isDeleted: boolean;
-  createdAt: string;
-  updatedAt: string;
-  shopId: string;
-  customerId: any;
-  quantity: number;
-  shop: IShop;
+  discount?: number;
+  isDeleted?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  shopId?: string;
+  customerId?: any;
+  quantity?: number;
+  shop?: IShop;
 }
 
 export interface IShop {

@@ -10,9 +10,7 @@ interface AdminLayoutProps {
 }
 
 const AdminLayout: FC<AdminLayoutProps> = ({ children }) => {
-  const pathname = usePathname(); // Get the current path
-
-  // Only show sidebar on specific pages (e.g., '/admin/dashboard', '/admin/users')
+  const pathname = usePathname();
   const showSidebar = pathname.startsWith("/admin");
 
   return (

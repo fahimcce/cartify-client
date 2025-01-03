@@ -1,13 +1,12 @@
 "use client";
 import React from "react";
-import "../../../styles/Ticker.css"; // Import the CSS file for animations
+import "../../../styles/Ticker.css";
 
 const Ticker = () => {
   return (
     <div className="ticker-container">
       <div className="ticker-content">
-        {/* Repeated items for seamless scrolling */}
-        {Array(10)
+        {Array(20)
           .fill(null)
           .map((_, idx) => (
             <React.Fragment key={idx}>

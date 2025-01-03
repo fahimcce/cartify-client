@@ -5,14 +5,38 @@
 /* eslint-disable no-console */
 /* eslint-disable padding-line-between-statements */
 "use client";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { createProduct } from "@/src/services/vendor/vendorServices";
 import { uploadImageToCloudinary } from "@/src/utils/uploadToCloudinary";
+import { fetchCategories } from "@/src/services/Category Services/CategoryServices";
+import { Tcategory } from "@/src/types";
 
 export default function CreateProductPage() {
   const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState<Tcategory[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data: Tcategory[] = await fetchCategories();
+      console.log(data);
+      setCategories(data);
+    };
+
+    fetchData();
+  }, []);
+
+  const handleCategoryChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const value = Array.from(
+      event.target.selectedOptions,
+      (option) => option.value
+    );
+    setSelectedCategories(value);
+  };
 
   const handlePostSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,20 +51,24 @@ export default function CreateProductPage() {
       inventoryCount: parseInt(formData.get("inventoryCount") as string, 10),
       discount: parseFloat(formData.get("discount") as string),
       images,
+      categories: selectedCategories,
     };
+
     try {
       await createProduct(productData);
       toast.success("Product created successfully!");
       formRef.current?.reset();
+      setSelectedCategories([]);
       setLoading(false);
-    } catch (err: any) {
+    } catch {
       toast.error("Something went wrong. Try again later.");
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="w-full md:w-2/3 p-6 bg-white rounded-lg shadow-md">
         <h1 className="text-3xl font-bold text-center mb-6">
           Create a New Product
         </h1>
@@ -83,7 +111,7 @@ export default function CreateProductPage() {
             <input
               name="price"
               type="number"
-              step="0.01" // Allows for floating point values
+              step="0.01"
               className="w-full input input-bordered"
               placeholder="Price of the product"
               required
@@ -110,7 +138,7 @@ export default function CreateProductPage() {
             <input
               name="discount"
               type="number"
-              step="0.01" // Allows for floating point values
+              step="0.01"
               className="w-full input input-bordered"
               placeholder="Discount on the product"
               required
@@ -128,6 +156,25 @@ export default function CreateProductPage() {
               className="w-full input input-bordered"
               required
             />
+          </div>
+
+          <div>
+            <label htmlFor="categories" className="block font-medium mb-1">
+              Categories
+            </label>
+            <select
+              name="categories"
+              multiple
+              className="w-full input input-bordered"
+              onChange={handleCategoryChange}
+              value={selectedCategories}
+            >
+              {categories.map((category: any) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
           </div>
 
           <button

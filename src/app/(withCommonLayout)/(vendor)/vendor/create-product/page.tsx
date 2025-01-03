@@ -4,7 +4,6 @@ import CreateProductPage from "@/src/components/modules/products/CreateProductFo
 export default function CreateProduct() {
   return (
     <div>
-      <h1>This is CreateProduct Page</h1>
       <CreateProductPage></CreateProductPage>
     </div>
   );
