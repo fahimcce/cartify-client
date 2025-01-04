@@ -1,3 +1,4 @@
+"use server";
 import axiosInstance from "@/src/lib/AxiosInstance";
 import { Tcategory } from "@/src/types";
 
@@ -34,6 +35,19 @@ export const deleteCategory = async (id: string) => {
 
   return response.data?.message;
 };
+
+export const CategoryBasedProducts = async (id: string) => {
+  const response = await axiosInstance.get(`/category/category-products/${id}`);
+
+  if (!response.data.success) {
+    throw new Error(
+      response.data.message || "Failed to fetch Category Wise Products."
+    );
+  }
+
+  return response?.data?.data;
+};
+
 export const updateCategory = async (
   id: string,
   payload: Partial<Tcategory>

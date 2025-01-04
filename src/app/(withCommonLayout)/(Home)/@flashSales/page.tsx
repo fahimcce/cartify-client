@@ -5,7 +5,7 @@
 import { useEffect, useState } from "react";
 
 export default function FlashSale() {
-  const [flashSaleProducts, setFlashSaleProducts] = useState([
+  const [flashSaleProducts] = useState([
     {
       id: 1,
       name: "Wireless Headphones",
@@ -27,7 +27,7 @@ export default function FlashSale() {
       name: "Gaming Mouse",
       price: 49.99,
       discountPrice: 29.99,
-      imageUrl: "https://example.com/mouse.jpg",
+      imageUrl: "https://shorturl.at/GJexO",
     },
   ]);
 

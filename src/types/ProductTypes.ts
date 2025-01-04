@@ -3,7 +3,7 @@ export interface IProduct {
   name: string;
   description: string;
   inventoryCount: number;
-  images: any;
+  images: string;
   price: number;
   discount?: number;
   isDeleted?: boolean;
@@ -11,8 +11,8 @@ export interface IProduct {
   updatedAt?: string;
   shopId?: string;
   customerId?: any;
-  quantity?: number;
-  shop?: IShop;
+  quantity: number;
+  shop: IShop;
 }
 
 export interface IShop {
