@@ -38,7 +38,7 @@ export default function CategoryProducts() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-48">
+      <div className="flex items-center justify-center h-48 h-screen">
         <div className="spinner border-4 border-blue-500 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
       </div>
     );
@@ -56,9 +56,11 @@ export default function CategoryProducts() {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 h-screen">
-      {products.map((product: IProduct) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+      {products
+        .filter((product: IProduct) => !product.isDeleted) // Filter out deleted products
+        .map((product: IProduct) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
     </div>
   );
 }

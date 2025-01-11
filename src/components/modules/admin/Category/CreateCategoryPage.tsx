@@ -23,6 +23,7 @@ export default function CreateCategoryPage() {
       name: formData.get("name") as string,
       categoryImage: Photo,
     };
+
     try {
       await createCategory(payload);
       toast.success("Category created successfully!");
@@ -34,7 +35,7 @@ export default function CreateCategoryPage() {
   };
 
   return (
-    <div className="p-6 flex flex-col items-center">
+    <div className="p-6 flex flex-col items-center h-screen">
       <h1 className="text-2xl font-bold mb-6">Create New Category</h1>
       <form
         ref={formRef}

@@ -24,7 +24,7 @@ export default function DropDownMenu() {
     <Dropdown>
       <DropdownTrigger>
         {user ? (
-          <Avatar className="cursor-pointer" src={user?.profilePhoto} />
+          <Avatar className="cursor-pointer" src={user?.photo} />
         ) : (
           <Avatar className="cursor-pointer" name="login" />
         )}

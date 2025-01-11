@@ -4,20 +4,13 @@
 "use client";
 
 import { duplicateProduct } from "@/src/services/vendor/vendorServices";
+import { IProduct } from "@/src/types/ProductTypes";
 import { Card, CardHeader, CardBody, Image, Button } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 interface ProductCardProps {
-  product: {
-    id: string;
-    name: string;
-    description: string;
-    price: number;
-    inventoryCount: number;
-    images: string | null;
-    discount: number;
-  };
+  product: IProduct;
   handleDelete: (id: string) => void;
   onDuplicateSuccess: (newProduct: any) => void;
 }
@@ -32,18 +25,17 @@ export default function ProductCard({
 
   const router = useRouter();
 
-  // Navigate to the update page
   const handleUpdate = () => {
-    router.push(`/products/update/${id}`); // Navigate to update page
+    router.push(`/products/update/${id}`);
   };
 
   const handleDuplicate = async () => {
     try {
-      const newProduct = await duplicateProduct(id);
+      const newProduct = await duplicateProduct(id as string);
       toast.success("Product duplicated successfully!");
       onDuplicateSuccess(newProduct);
-    } catch (error: any) {
-      toast.error(error.message || "Failed to duplicate product.");
+    } catch {
+      toast.error("Failed to duplicate product.");
     }
   };
 
@@ -87,7 +79,7 @@ export default function ProductCard({
             color="danger"
             variant="solid"
             size="sm"
-            onPress={() => handleDelete(id)}
+            onPress={() => handleDelete(id as string)}
           >
             Delete
           </Button>

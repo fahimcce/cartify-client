@@ -55,25 +55,27 @@ export default function CartPage() {
                   <td>
                     <div className="flex justify-center items-center space-x-2">
                       <button
-                        onClick={() => decreaseQuantity(product.id)}
+                        onClick={() => decreaseQuantity(product.id as string)}
                         className="px-2 bg-gray-300 rounded hover:bg-gray-400"
                       >
                         -
                       </button>
                       <span>{product.quantity}</span>
                       <button
-                        onClick={() => increaseQuantity(product.id)}
+                        onClick={() => increaseQuantity(product.id as string)}
                         className="px-2 bg-gray-300 rounded hover:bg-gray-400"
                       >
                         +
                       </button>
                     </div>
                   </td>
-                  <td>${(product.price * product.quantity).toFixed(2)}</td>
+                  <td>
+                    ${(product.price * (product.quantity as number)).toFixed(2)}
+                  </td>
                   <td>
                     <button
                       className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
-                      onClick={() => removeFromCart(product.id)}
+                      onClick={() => removeFromCart(product.id as string)}
                     >
                       Remove
                     </button>

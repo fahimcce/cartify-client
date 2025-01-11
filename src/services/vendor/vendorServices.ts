@@ -1,6 +1,6 @@
 /* eslint-disable padding-line-between-statements */
 import axiosInstance from "@/src/lib/AxiosInstance";
-import { IProduct } from "@/src/types/ProductTypes";
+import { PProduct } from "@/src/types/ProductTypes";
 
 export const fetchProducts = async () => {
   const response = await axiosInstance.get(`/vendor/my-shop-products`);
@@ -11,7 +11,7 @@ export const fetchProducts = async () => {
   }
 };
 
-export const createProduct = async (productData: IProduct) => {
+export const createProduct = async (productData: PProduct) => {
   try {
     const response = await axiosInstance.post(
       `/products/create-product`,
@@ -24,7 +24,7 @@ export const createProduct = async (productData: IProduct) => {
 };
 
 export const deleteProduct = async (id: string) => {
-  const response = await axiosInstance.delete(`/products/${id}`);
+  const response = await axiosInstance.patch(`/products/delete/${id}`);
 
   if (!response.data.success) {
     throw new Error(response.data.message || "Failed to delete product.");

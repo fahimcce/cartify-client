@@ -67,12 +67,15 @@ export const Navbar = () => {
         {/* Mobile Menu Toggle */}
         <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
           <ThemeSwitch />
+          <NavbarItem className="sm:flex gap-2">
+            <DropDownMenu />
+          </NavbarItem>
           <button
             aria-label="Toggle Mobile Menu"
             className="text-foreground"
             onClick={toggleMobileMenu}
           >
-            ☰ {/* Replace with a hamburger icon if you want */}
+            ☰
           </button>
         </NavbarContent>
       </NextUINavbar>
@@ -94,7 +97,7 @@ export const Navbar = () => {
                   <NextLink
                     className="text-foreground text-lg"
                     href={item.href}
-                    onClick={toggleMobileMenu} // Close menu after navigation
+                    onClick={toggleMobileMenu}
                   >
                     {item.label}
                   </NextLink>

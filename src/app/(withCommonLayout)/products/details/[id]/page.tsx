@@ -53,7 +53,7 @@ export default function ProductDetailsPage() {
       </div>
     );
 
-  const shopId = product.shop.id;
+  const shopId = product?.shop?.id;
   const handleGoToShop = () => {
     router.push(`/shops/details/${shopId}`);
   };
@@ -106,7 +106,7 @@ export default function ProductDetailsPage() {
                 <span className="font-semibold text-green-600">
                   Shop Name:{" "}
                 </span>
-                {product.shop.shopName}
+                {product?.shop?.shopName}
               </p>
             </div>
 
@@ -115,7 +115,7 @@ export default function ProductDetailsPage() {
                 onClick={handleGoToShop}
                 className="w-[200px] bg-green-500 text-white py-2 px-4 rounded hover:bg-purple-700 transition"
               >
-                {product.shop.shopName}
+                {product?.shop?.shopName}
               </button>
             </div>
           </div>

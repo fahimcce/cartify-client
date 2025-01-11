@@ -5,7 +5,7 @@ export interface IProduct {
   inventoryCount: number;
   images: string;
   price: number;
-  discount?: number;
+  discount: number;
   isDeleted?: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -13,6 +13,17 @@ export interface IProduct {
   customerId?: any;
   quantity: number;
   shop: IShop;
+  categories?: string[];
+}
+
+export interface PProduct {
+  name: string;
+  description: string;
+  inventoryCount: number;
+  images: string;
+  price: number;
+  discount: number;
+  categories?: string[];
 }
 
 export interface IShop {

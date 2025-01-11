@@ -43,7 +43,7 @@ export default function ShopProducts() {
       await deleteProduct(id);
       toast.success("Product deleted successfully!");
       setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id));
-    } catch (error) {
+    } catch {
       toast.error("Failed to delete product.");
     }
   };
