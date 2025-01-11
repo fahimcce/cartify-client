@@ -25,7 +25,7 @@ export default function CategoriesPage() {
   return (
     <div className="p-6 flex justify-center items-center h-screen">
       {categories.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {categories.map((category) => (
             <CategoryCard
               key={category.id}

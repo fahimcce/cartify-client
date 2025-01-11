@@ -30,7 +30,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ category, onDelete }) => {
   };
 
   return (
-    <div className="border p-4 rounded-md shadow-md hover:shadow-lg transition">
+    <div className="border p-4  shadow-md hover:shadow-lg ">
       <div className="flex justify-center mb-4">
         <Image
           src={

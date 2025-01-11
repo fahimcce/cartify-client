@@ -8,8 +8,8 @@ export default async function Users() {
   const users = await getAllUsers();
 
   return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-4">
+    <div className="h-screen">
+      <h1 className="text-2xl  font-semibold mb-4">
         Total Users: {users?.length}
       </h1>
       <UsersTable key={users.id} users={users} />

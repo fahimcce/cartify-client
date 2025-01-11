@@ -8,7 +8,7 @@ export default async function Shops() {
   const shops = await getAllShops();
 
   return (
-    <div>
+    <div className="h-screen">
       <h1 className="text-2xl font-semibold mb-4">
         Total Shops: {shops?.data.length}
       </h1>
