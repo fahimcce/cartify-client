@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-sort-props */
 "use client";
 import { useRouter } from "next/navigation";
 
@@ -7,10 +8,9 @@ export default function Category() {
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Categories</h1>
+      <div className="flex justify-between mb-6">
+        <h1 className="text-2xl font-bold">all Categories</h1>
         <button
-          // eslint-disable-next-line react/jsx-sort-props
           onClick={() => router.push("/admin/create-category")}
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >

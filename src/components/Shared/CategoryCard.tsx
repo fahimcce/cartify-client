@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
 import { fetchCategories } from "@/src/services/Category Services/CategoryServices";
 import { Tcategory } from "@/src/types";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 function SkeletonLoader() {
   return (
@@ -50,7 +49,7 @@ export default function CategoryPage() {
               <SkeletonLoader key={index} />
             ))
           : // Render Categories
-            categories.slice(0, 10).map((category: Tcategory) => (
+            categories.map((category: Tcategory) => (
               <div
                 key={category.id}
                 className="rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-4 bg-white text-center"
@@ -74,14 +73,6 @@ export default function CategoryPage() {
                 </h2>
               </div>
             ))}
-      </div>
-      {/* Explore More Button */}
-      <div className="flex justify-center mt-4">
-        <Link href="/categories">
-          <button className="px-4 py-2 border hover:bg-green-600 hover:text-white shadow-lg">
-            Explore more categories...
-          </button>
-        </Link>
       </div>
     </div>
   );

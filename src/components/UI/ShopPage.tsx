@@ -77,45 +77,47 @@ const ShopPage: React.FC<ShopCardProps> = ({ shop }) => {
   };
 
   return (
-    <div className="border p-4 rounded-md shadow-md hover:shadow-lg transition">
-      <div className="flex items-center mb-4">
+    <div className="border p-4 shadow-lg hover:shadow-lg transition">
+      <div className="mb-4">
         <Image
-          src={
-            shop?.shopLogo ||
-            "https://img.freepik.com/premium-psd/3d-render-online-shopping-store_252008-3047.jpg"
-          }
+          src={shop?.shopLogo}
           alt={`${shopName} logo`}
-          className="w-16 h-16 object-cover rounded-full mr-4"
+          className="w-full h-60"
           height={150}
           width={250}
         />
-        <h2 className="text-xl font-semibold">{shopName}</h2>
+        <h2 className="text-xl text-center mt-1">{shopName}</h2>
       </div>
       <h2 className="text-xl font-semibold">Follower: {followerCount}</h2>
       <p className="text-gray-600">Address: {address}</p>
-      <p className="text-gray-600 mt-2">Vendor: {vendor.name}</p>
-      <div className="relative h-[100px] w-full">
-        <button
-          onClick={handleGoToShop}
-          className="absolute bottom-0 right-0 w-[200px] bg-green-500 text-white py-2 px-4 rounded hover:bg-purple-700 transition"
-        >
-          Go to {shopName}
-        </button>
-        {isFollowed ? (
+      <p className="text-gray-600 mt-2">Owner : {vendor.name}</p>
+
+      <div className="flex justify-between">
+        <div>
+          {isFollowed ? (
+            <button
+              onClick={handleUnfollow}
+              className="absolute bg-red-500 text-white py-2 px-4 rounded hover:bg-purple-700"
+            >
+              Unfollow
+            </button>
+          ) : (
+            <button
+              onClick={handleFollow}
+              className="absolute bg-green-500 text-white py-2 px-4 rounded hover:bg-purple-700"
+            >
+              Follow
+            </button>
+          )}
+        </div>
+        <div>
           <button
-            onClick={handleUnfollow}
-            className="absolute bg-red-500 text-white py-2 px-4 rounded hover:bg-purple-700"
+            onClick={handleGoToShop}
+            className=" bg-green-500 text-white py-2 px-4 rounded hover:bg-purple-700"
           >
-            Unfollow
+            Go to {shopName}
           </button>
-        ) : (
-          <button
-            onClick={handleFollow}
-            className="absolute bg-green-500 text-white py-2 px-4 rounded hover:bg-purple-700"
-          >
-            Follow
-          </button>
-        )}
+        </div>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import { IProduct } from "@/src/types/ProductTypes";
 import { useParams, useRouter } from "next/navigation";
 import { useCart } from "@/src/hook/useCart";
 import { Spinner } from "@nextui-org/spinner";
+import { getProductReviews } from "@/src/services/orderServices/orderServices";
 
 export default function ProductDetailsPage() {
   const router = useRouter();
@@ -19,6 +20,10 @@ export default function ProductDetailsPage() {
   const { addToCart } = useCart();
 
   const [product, setProduct] = useState<IProduct | null>(null);
+  const [reviews, setReviews] = useState<
+    { rating: number; review: string; customerName: string }[] | null
+  >(null);
+  const [averageRating, setAverageRating] = useState<number | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -43,7 +48,27 @@ export default function ProductDetailsPage() {
       }
     };
 
+    const fetchReviews = async () => {
+      try {
+        const reviewsData = await getProductReviews(id as string);
+
+        setReviews(reviewsData);
+        if (reviewsData?.length) {
+          const avgRating =
+            reviewsData.reduce(
+              (sum: number, { rating }: { rating: number }) => sum + rating,
+              0
+            ) / reviewsData.length;
+
+          setAverageRating(avgRating);
+        }
+      } catch (error) {
+        toast.error("Failed to fetch reviews.");
+      }
+    };
+
     fetchProduct();
+    fetchReviews();
   }, [id]);
 
   if (!product)
@@ -58,8 +83,27 @@ export default function ProductDetailsPage() {
     router.push(`/shops/details/${shopId}`);
   };
 
+  const renderStars = (rating: number) => {
+    const stars = [];
+
+    for (let i = 0; i < 5; i++) {
+      stars.push(
+        <span
+          key={i}
+          className={`text-lg ${
+            i < Math.round(rating) ? "text-yellow-500" : "text-gray-300"
+          }`}
+        >
+          ★
+        </span>
+      );
+    }
+
+    return stars;
+  };
+
   return (
-    <div className="max-w-6xl mx-auto p-6">
+    <div className="max-w-6xl mx-auto p-6 min-h-screen">
       <button
         onClick={() => router.back()}
         className="mb-4 bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400 transition"
@@ -75,7 +119,7 @@ export default function ProductDetailsPage() {
               alt={product.name}
               width={500}
               height={500}
-              className="rounded-lg object-cover"
+              className="rounded-lg h-96 object-cover"
             />
           ) : (
             <div className="w-[500px] h-[500px] bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
@@ -129,6 +173,42 @@ export default function ProductDetailsPage() {
             Add to Cart
           </button>
         </div>
+      </div>
+
+      {/* Reviews Section */}
+      <div className="mt-8">
+        <h2 className="text-2xl font-semibold mb-4">Customer Reviews</h2>
+
+        {averageRating !== null && (
+          <div className="flex items-center mb-4">
+            <span className="text-lg font-semibold mr-2">Average Rating:</span>
+            {renderStars(averageRating)}
+            <span className="ml-2 text-gray-600">
+              ({averageRating.toFixed(1)})
+            </span>
+          </div>
+        )}
+
+        {reviews?.length ? (
+          <div className="space-y-4">
+            {reviews.map(({ rating, review, customerName }, index) => (
+              <div
+                key={index}
+                className="bg-gray-100 p-4 rounded-lg shadow-md border border-gray-300"
+              >
+                <div className="flex items-center mb-2">
+                  {renderStars(rating)}
+                </div>
+                <p className="text-gray-700">{review}</p>
+                <p className="text-sm text-gray-500 mt-2">- {customerName}</p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-gray-500">
+            No reviews available for this product.
+          </p>
+        )}
       </div>
     </div>
   );

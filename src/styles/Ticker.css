@@ -1,7 +1,6 @@
 /* Ticker Container */
 .ticker-container {
   overflow: hidden;
-  background-color: #0a2540; /* Dark blue background */
   color: white;
   padding: 15px 0;
   position: relative;
@@ -25,7 +24,7 @@
 }
 
 .star {
-  color: #e63946;
+  color: white;
   font-size: 20px;
 }
 

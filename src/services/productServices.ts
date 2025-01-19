@@ -11,3 +11,12 @@ export const getAllProducts = async () => {
     return { data: [], error: "Something went wrong" };
   }
 };
+
+export const flashProducts = async () => {
+  try {
+    const response = await axiosInstance.get("/products/flashproducts");
+    return response.data.data;
+  } catch (error) {
+    return { data: [], error: "Something went wrong" };
+  }
+};

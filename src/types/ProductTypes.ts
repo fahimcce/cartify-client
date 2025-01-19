@@ -14,6 +14,27 @@ export interface IProduct {
   quantity: number;
   shop: IShop;
   categories?: string[];
+  flashSale?: boolean;
+  filter?: any;
+}
+export interface FProduct {
+  id: string;
+  name: string;
+  description: string;
+  inventoryCount: number;
+  images: string;
+  price: number;
+  discount: number;
+  isDeleted?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+  shopId?: string;
+  customerId?: any;
+  quantity: number;
+  shop: IShop;
+  categories?: string[];
+  flashSale?: boolean;
+  filter?: any;
 }
 
 export interface PProduct {

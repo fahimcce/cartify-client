@@ -8,7 +8,7 @@ import { getMyOrder } from "@/src/services/orderServices/orderServices";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import OrdersList from "./OrdersList";
-import LoadingBlur from "../../Shared/LoadingBlur";
+import CommonLoader from "../../Shared/CommonLoader";
 
 export default function GetOrders() {
   const { user } = useAuth();
@@ -32,7 +32,7 @@ export default function GetOrders() {
     fetchOrders();
   }, [user?.id]);
 
-  if (loading) return <LoadingBlur />;
+  if (loading) return <CommonLoader />;
 
   return (
     <div className="max-w-4xl mx-auto p-6">

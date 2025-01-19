@@ -22,6 +22,7 @@ export default function UpdateProductPage() {
     price: "",
     inventoryCount: "",
     discount: "",
+    flashSale: false,
   });
 
   useEffect(() => {
@@ -48,6 +49,7 @@ export default function UpdateProductPage() {
           price: productData.price?.toString() || "",
           inventoryCount: productData.inventoryCount?.toString() || "",
           discount: productData.discount?.toString() || "",
+          flashSale: productData.flashSale || false,
         });
       } catch (error) {
         toast.error("Failed to fetch product details.");
@@ -76,9 +78,8 @@ export default function UpdateProductPage() {
       price: parseFloat(formData.price),
       inventoryCount: parseInt(formData.inventoryCount),
       discount: parseFloat(formData.discount),
+      flashSale: formData.flashSale,
     };
-
-    console.log("Payload Sent to Server:", payload); // Check the data before sending
 
     try {
       await updateProduct(id, payload);
@@ -108,6 +109,14 @@ export default function UpdateProductPage() {
           onChange={handleInputChange}
           fullWidth
         />
+        <Input
+          label="Flash Sale"
+          name="flashSale"
+          value={formData.flashSale.toString()} // Convert boolean to string
+          onChange={handleInputChange}
+          fullWidth
+        />
+
         <Input
           label="Price"
           name="price"

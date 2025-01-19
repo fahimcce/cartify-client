@@ -18,43 +18,29 @@ export default function VendorShop() {
     );
   if (error) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          backgroundColor: "#f8d7da",
-          color: "#721c24",
-          fontSize: "18px",
-          fontWeight: "bold",
-          textAlign: "center",
-          borderRadius: "8px",
-          padding: "20px",
-        }}
-      >
+      <div className="flex justify-center items-center">
         <p>⚠️ You have No shop . Please create a shop</p>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between p-6 bg-white rounded-lg shadow-md">
-      <div className="w-1/3">
-        <img
-          src={shop.shopLogo}
-          alt={`${shop.shopName} Logo`}
-          className="object-cover rounded-lg"
-        />
-      </div>
-      <div className="mb-4 md:mb-0">
-        <h1 className="text-2xl font-bold mb-2">My Shop</h1>
-        <p className="text-lg">
-          <strong>Shop Name:</strong> {shop?.shopName || "N/A"}
+    <div className="grid grid-cols-1 flex items-center justify-center p-6 bg-white rounded-lg shadow-md">
+      <div className="mb-2">
+        <p className="text-lg mt-2 text-center">
+          <strong>My Shop Name:</strong> {shop?.shopName || "N/A"}
         </p>
+        <br />
         <p className="text-lg">
           <strong>Address:</strong> {shop?.address || "Not Provided"}
         </p>
+      </div>
+      <div className="flex justify-center">
+        <img
+          src={shop.shopLogo}
+          alt={`${shop.shopName} Logo`}
+          className="w-3/4 rounded-lg"
+        />
       </div>
     </div>
   );

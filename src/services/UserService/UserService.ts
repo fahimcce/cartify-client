@@ -43,3 +43,20 @@ export const deleteShop = async (id: string) => {
     throw new Error("Failed to delete Shop.");
   }
 };
+
+export const myProfile = async () => {
+  try {
+    const response = await axiosInstance.get("/user/me");
+    return response.data.data;
+  } catch {
+    throw new Error("Failed to fetch Profile.");
+  }
+};
+export const updateProfile = async (payload: any) => {
+  try {
+    const response = await axiosInstance.patch("/user/updateProfile", payload);
+    return response.data.data;
+  } catch {
+    throw new Error("Failed to update Profile.");
+  }
+};

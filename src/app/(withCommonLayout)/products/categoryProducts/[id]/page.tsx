@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable padding-line-between-statements */
 /* eslint-disable no-console */
@@ -46,18 +48,19 @@ export default function CategoryProducts() {
 
   if (!products || products.length === 0) {
     return (
-      <div className="flex items-center justify-center h-48">
-        <p className="text-lg font-medium text-gray-500">
-          No products found for this category.
-        </p>
+      <div className="flex items-center justify-center min-h-screen">
+        <img
+          className="w-1/4 h-1/4"
+          src="https://i.ibb.co.com/QQ5TWtj/sold.jpg"
+        />
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 h-screen">
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 min-h-screen">
       {products
-        .filter((product: IProduct) => !product.isDeleted) // Filter out deleted products
+        .filter((product: IProduct) => !product.isDeleted)
         .map((product: IProduct) => (
           <ProductCard key={product.id} product={product} />
         ))}

@@ -54,7 +54,9 @@ export default function ShopProducts() {
 
   return (
     <div className="shop-products-container">
-      <h2 className="text-center text-2xl font-bold mb-6">Shop Products</h2>
+      <h2 className="text-center text-2xl font-bold mb-6">
+        Your Shop Products
+      </h2>
 
       {loading ? (
         <div className="flex justify-center items-center h-64">

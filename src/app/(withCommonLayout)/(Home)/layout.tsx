@@ -5,15 +5,18 @@ export default function layout({
   featureProducts,
   featureCategories,
   flashSales,
+  faq,
 }: {
   children: ReactNode;
   featureProducts: ReactNode;
   featureCategories: ReactNode;
   flashSales: ReactNode;
+  faq: ReactNode;
 }) {
   return (
     <div>
-      {children} {featureProducts} {featureCategories} {flashSales}
+      {children} {flashSales} {featureProducts} {featureCategories}
+      {faq}
     </div>
   );
 }

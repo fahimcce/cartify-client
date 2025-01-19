@@ -41,11 +41,11 @@ export default function ProductCard({
 
   return (
     <Card key={id} className="p-4 shadow-md">
-      <CardHeader className="flex justify-center">
+      <CardHeader className="flex justify-center border-2">
         <Image
           alt={name}
           src={images || "https://via.placeholder.com/150"}
-          className="w-40 h-40 object-cover rounded-lg"
+          className="w-full rounded-lg"
         />
       </CardHeader>
       <CardBody>

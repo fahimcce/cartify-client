@@ -46,9 +46,7 @@ export default function RootLayout({
       >
         <GProvider>
           <AuthProvider>
-            <Providers
-              themeProps={{ attribute: "class", defaultTheme: "dark" }}
-            >
+            <Providers>
               <CartProvider>
                 {children}
                 <CartIcon />

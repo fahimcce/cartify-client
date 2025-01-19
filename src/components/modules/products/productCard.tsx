@@ -23,54 +23,42 @@ export default function ProductCard({ product }: { product: IProduct }) {
 
   return (
     <div className="p-4">
-      <Card className="w-[350px] h-[400px] hover:shadow-lg transition-shadow border rounded-lg flex flex-col justify-between relative">
+      <Card className="hover:shadow-lg transition-shadow  flex flex-col rounded-md justify-between relative">
+        {/* Card Body */}
+        <CardBody className="overflow-hidden flex justify-center relative">
+          <Image
+            src={product.images}
+            alt={product.name}
+            width={340}
+            height={150}
+            onClick={handleDetailsClick}
+            className="cursor-pointer w-full h-[120px]"
+          />
+          <p className="text-sm text-gray-600 mt-1">
+            In Stock: {product.inventoryCount}
+          </p>
+        </CardBody>
         {/* Card Header */}
-        <CardHeader className="pb-0 pt-4 px-4">
-          <p className="text-lg font-bold truncate">{product.name}</p>
+        <CardHeader className="pb-0 px-4">
+          <p className="text-md font-semibold truncate">{product.name}</p>
         </CardHeader>
         <div className="absolute top-2 right-2 bg-black text-white text-xs font-semibold py-1 px-3 rounded-full">
           ${product.price}
         </div>
 
-        {/* Card Body */}
-        <CardBody className="overflow-hidden flex justify-center relative">
-          {product.images ? (
-            <Image
-              src={product.images}
-              alt={product.name}
-              width={340} // Matches card width
-              height={150}
-              className="rounded-lg object-cover"
-            />
-          ) : (
-            <div className="w-[340px] h-[150px] bg-gray-200 rounded-lg flex items-center justify-center text-gray-500">
-              No Image
-            </div>
-          )}
-          <p className="text-sm text-gray-600 mt-1">
-            In Stock: {product.inventoryCount}
-          </p>
-        </CardBody>
-
         {/* Button Row */}
-        <div className="flex justify-between px-4 pb-4">
+        <div className="grid grid-cols-1 pb-1 mx-1 mb-1">
           <button
-            className="bg-green-500 text-white py-2 px-3 rounded hover:bg-green-600 transition"
+            className="bg-green-500 mb-1 rounded-sm text-white text-sm hover:bg-green-600 transition"
             onClick={handleBuyNow}
           >
             Buy Now
           </button>
           <button
-            className="bg-blue-500 text-white py-2 px-3 rounded hover:bg-blue-600 transition"
+            className="bg-blue-500 text-white rounded-sm text-sm hover:bg-blue-600 transition"
             onClick={() => addToCart(product)}
           >
             Add to Cart
-          </button>
-          <button
-            className="bg-gray-500 text-white py-2 px-3 rounded hover:bg-gray-600 transition"
-            onClick={handleDetailsClick}
-          >
-            Details
           </button>
         </div>
       </Card>

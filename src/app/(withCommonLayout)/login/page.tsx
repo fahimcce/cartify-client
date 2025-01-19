@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { toast } from "sonner";
-import Cookies from "js-cookie"; // Import js-cookie for cookie management
+import Cookies from "js-cookie";
 import { verifiyToken } from "@/src/utils/verifyToken";
 import { useAppDispatch } from "@/src/redux/hook";
 import { setUser } from "@/src/redux/features/auth/authSlice";
@@ -21,12 +21,23 @@ const LoginPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
 
-  // Handle navigation to the registration page
   const handleRegisterRedirect = () => {
     router.push("/register");
   };
 
-  // Handle form submission
+  const handleDemoLogin = (role: string) => {
+    const demoAccounts = {
+      admin: { email: "fahim@gmail.com", password: "123456" },
+      vendor: { email: "riki@gmail.com", password: "123456" },
+      user: { email: "mmk@gmail.com", password: "123456" },
+    };
+    const account = demoAccounts[role as "admin" | "vendor" | "user"];
+    if (account) {
+      setEmail(account.email);
+      setPassword(account.password);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -41,17 +52,13 @@ const LoginPage = () => {
         }
       );
 
-      // Assuming backend sends a success message with access token and refresh token
       const { accessToken, refreshToken } = response.data.data;
 
-      // Store the tokens in cookies
-      // Cookies.set("accessToken", accessToken);
       Cookies.set("accessToken", accessToken, { path: "/", secure: false });
       Cookies.set("refreshToken", refreshToken, { path: "/", secure: false });
-      // Cookies.set("refreshToken", refreshToken);
 
       const user = verifiyToken(accessToken);
-      // console.log(user);
+
       Cookies.set(
         "user",
         JSON.stringify({
@@ -60,15 +67,14 @@ const LoginPage = () => {
           name: user?.name,
           photo: user?.profilePhoto,
           id: user?.id,
+          userId: user?.userId,
         })
       );
-      // axios.defaults.headers.common["Authorization"] = `${accessToken}`;
+
       dispatch(setUser({ user, token: accessToken }));
 
-      // Show success toast
       toast.success("Logged in successfully!");
 
-      // Redirect to homepage
       router.push("/");
       window.location.href = "/";
     } catch (error: any) {
@@ -83,6 +89,29 @@ const LoginPage = () => {
     <div className="min-h-screen flex justify-center items-center bg-gray-100 p-6">
       <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-center mb-6">Login</h1>
+        <h1 className="text-red-500">
+          You can explore the demo account. Please dont misuse it.
+        </h1>
+        <div className="flex justify-around mb-2">
+          <button
+            className="border px-4 py-2"
+            onClick={() => handleDemoLogin("admin")}
+          >
+            Admin
+          </button>
+          <button
+            className="border px-4 py-2"
+            onClick={() => handleDemoLogin("vendor")}
+          >
+            Vendor
+          </button>
+          <button
+            className="border px-4 py-2"
+            onClick={() => handleDemoLogin("user")}
+          >
+            User
+          </button>
+        </div>
         <form onSubmit={handleSubmit}>
           {/* Email Input */}
           <div className="mb-4">

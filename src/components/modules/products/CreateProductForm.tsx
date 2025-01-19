@@ -1,9 +1,9 @@
 /* eslint-disable import/order */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable react/jsx-sort-props */
-/* eslint-disable no-console */
 /* eslint-disable padding-line-between-statements */
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable react/jsx-sort-props */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
@@ -15,27 +15,27 @@ import { Tcategory } from "@/src/types";
 export default function CreateProductPage() {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Tcategory[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState<Tcategory[]>([]);
+  const [categoryInputVisible, setCategoryInputVisible] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const data: Tcategory[] = await fetchCategories();
-      console.log(data);
       setCategories(data);
     };
 
     fetchData();
   }, []);
 
-  const handleCategoryChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const value = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setSelectedCategories(value);
+  const handleCategorySelect = (category: Tcategory) => {
+    if (!selectedCategories.find((cat) => cat.id === category.id)) {
+      setSelectedCategories((prev) => [...prev, category]);
+    }
+  };
+
+  const handleCategoryRemove = (id: string) => {
+    setSelectedCategories((prev) => prev.filter((cat) => cat.id !== id));
   };
 
   const handlePostSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -51,7 +51,7 @@ export default function CreateProductPage() {
       inventoryCount: parseInt(formData.get("inventoryCount") as string, 10),
       discount: parseFloat(formData.get("discount") as string),
       images,
-      categories: selectedCategories,
+      categories: selectedCategories.map((cat) => cat.id),
     };
 
     try {
@@ -67,7 +67,7 @@ export default function CreateProductPage() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen pb-16">
       <div className="w-full md:w-2/3 p-6 bg-white rounded-lg shadow-md">
         <h1 className="text-3xl font-bold text-center mb-6">
           Create a New Product
@@ -162,19 +162,46 @@ export default function CreateProductPage() {
             <label htmlFor="categories" className="block font-medium mb-1">
               Categories
             </label>
-            <select
-              name="categories"
-              multiple
-              className="w-full input input-bordered"
-              onChange={handleCategoryChange}
-              value={selectedCategories}
+            <div
+              className="relative"
+              onClick={() => setCategoryInputVisible((prev) => !prev)}
             >
-              {categories.map((category: any) => (
-                <option key={category.id} value={category.id}>
+              <div className="w-full input input-bordered cursor-pointer">
+                {selectedCategories.length > 0
+                  ? selectedCategories.map((cat) => cat.name).join(", ")
+                  : "Select categories..."}
+              </div>
+              {categoryInputVisible && (
+                <div className="absolute z-10 bg-white border border-gray-200 w-full rounded shadow">
+                  {categories.map((category) => (
+                    <div
+                      key={category.id}
+                      className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                      onClick={() => handleCategorySelect(category)}
+                    >
+                      {category.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="mt-2 flex flex-wrap gap-2">
+              {selectedCategories.map((category) => (
+                <span
+                  key={category.id}
+                  className="inline-flex items-center px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full"
+                >
                   {category.name}
-                </option>
+                  <button
+                    type="button"
+                    onClick={() => handleCategoryRemove(category.id)}
+                    className="ml-2 text-indigo-700 hover:text-indigo-900"
+                  >
+                    &times;
+                  </button>
+                </span>
               ))}
-            </select>
+            </div>
           </div>
 
           <button

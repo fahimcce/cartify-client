@@ -30,6 +30,7 @@ export interface IUSER {
   exp: number;
   name: string;
   id: string;
+  userId: string;
   profilePhoto: string;
 }
 
@@ -63,4 +64,14 @@ export type Tcategory = {
   id: string;
   name: string;
   categoryImage: string;
+};
+
+export type Tlogin = {
+  email: string;
+  password: string;
+};
+export type TReview = {
+  productId: string;
+  rating: number;
+  review: string;
 };
