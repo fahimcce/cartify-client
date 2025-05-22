@@ -1,3 +1,9 @@
+/* eslint-disable import/order */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable padding-line-between-statements */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/label-has-associated-control */
 /* eslint-disable react/jsx-sort-props */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable @next/next/no-img-element */
@@ -5,7 +11,7 @@
 
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
+import { Mail, Phone, MapPin, Building2, Edit2, X } from "lucide-react";
 import {
   myProfile,
   updateProfile,
@@ -26,7 +32,6 @@ export default function ProfilePage() {
     const fetchProfile = async () => {
       try {
         const data = await myProfile();
-
         setProfileData(data);
         setFormData({
           name: data?.name || "",
@@ -34,7 +39,7 @@ export default function ProfilePage() {
           address: data?.address || "",
         });
       } catch {
-        toast.error("Something went wrong");
+        toast.error("Failed to load profile");
       } finally {
         setLoading(false);
       }
@@ -43,145 +48,200 @@ export default function ProfilePage() {
     fetchProfile();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: any) => {
     const { name, value } = e.target;
-
     setFormData({ ...formData, [name]: value });
   };
 
   const handleUpdate = async () => {
     try {
       await updateProfile(formData);
-      toast.success("SuccessFully Update Profile");
+      toast.success("Profile updated successfully");
       window.location.reload();
       setIsModalOpen(false);
     } catch {
-      toast.error("Something Went wrong!try again");
+      toast.error("Failed to update profile. Please try again.");
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="w-full bg-white rounded-lg shadow-md overflow-hidden flex flex-col md:flex-row">
-        {/* Left Section: Profile Picture and Basic Info */}
-        <div className="md:w-1/3 p-6 flex flex-col items-center bg-gray-50">
-          {loading ? (
-            <div className="w-32 h-32 rounded-full bg-gray-300 animate-pulse"></div>
-          ) : (
-            <img
-              src={profileData?.profilePhoto || "/default-avatar.png"}
-              alt="Profile Avatar"
-              className="w-32 h-32 rounded-full object-cover mb-4"
-            />
-          )}
-          <h1 className="text-xl font-bold text-gray-800">
-            {loading ? (
-              <div className="w-40 h-6 bg-gray-300 animate-pulse rounded mb-2"></div>
-            ) : (
-              profileData?.name || "Your Name"
-            )}
-          </h1>
-          <p className="text-gray-500">
-            {loading ? (
-              <span className="w-48 h-4 bg-gray-300 animate-pulse rounded block"></span>
-            ) : (
-              profileData?.jobTitle || "Jobtitle : N/A"
-            )}
-          </p>
-          <p className="text-sm text-gray-400 mt-2">
-            {loading ? (
-              <span className="w-48 h-4 bg-gray-300 animate-pulse rounded block"></span>
-            ) : (
-              profileData?.address || "N/A"
-            )}
-          </p>
-        </div>
-
-        {/* Right Section: Detailed Info */}
-        <div className="md:w-2/3 p-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-4">
-            Contact Information
-          </h2>
-          <div className="space-y-4">
-            <div className="flex items-center">
-              <span className="w-24 font-medium text-gray-600">Phone:</span>
-              <span className="text-gray-800">
-                {loading ? (
-                  <div className="w-48 h-4 bg-gray-300 animate-pulse rounded"></div>
-                ) : (
-                  profileData?.contactNumber || "+00 123 456 789"
-                )}
-              </span>
+    <div className="min-h-screen  p-4 md:p-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Profile Card */}
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:shadow-xl">
+          <div className="relative h-32 bg-green-500">
+            <div className="absolute -bottom-16 left-8">
+              {loading ? (
+                <div className="w-32 h-32 rounded-full bg-gray-300 animate-pulse border-4 border-white"></div>
+              ) : (
+                <img
+                  src={
+                    profileData?.profilePhoto ||
+                    "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&fit=crop"
+                  }
+                  alt="Profile"
+                  className="w-32 h-32 rounded-full object-cover border-4 border-white shadow-md"
+                />
+              )}
             </div>
-            <div className="flex items-center">
-              <span className="w-24 font-medium text-gray-600">Address:</span>
-              <span className="text-gray-800">
-                {loading ? (
-                  <div className="w-48 h-4 bg-gray-300 animate-pulse rounded"></div>
-                ) : (
-                  profileData?.address || "123 Street Name, City, Country"
-                )}
-              </span>
-            </div>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="absolute top-4 right-4 p-2 bg-white/20 backdrop-blur-sm rounded-full hover:bg-white/30 transition-colors"
+            >
+              <Edit2 className="w-5 h-5 text-white" />
+            </button>
           </div>
 
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="mt-8 px-4 py-2 bg-blue-500 text-white rounded"
-          >
-            Update Profile
-          </button>
-        </div>
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-lg w-96">
-            <h2 className="text-lg font-semibold mb-4">Update Profile</h2>
-            <div className="space-y-4">
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Name"
-                className="w-full px-4 py-2 border rounded"
-              />
-              <input
-                type="text"
-                name="contactNumber"
-                value={formData.contactNumber}
-                onChange={handleInputChange}
-                placeholder="Contact Number"
-                className="w-full px-4 py-2 border rounded"
-              />
-              <input
-                type="text"
-                name="address"
-                value={formData.address}
-                onChange={handleInputChange}
-                placeholder="Address"
-                className="w-full px-4 py-2 border rounded"
-              />
+          <div className="pt-20 px-8 pb-8">
+            {/* Basic Info */}
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold text-gray-900">
+                {loading ? (
+                  <div className="w-48 h-8 bg-gray-200 rounded animate-pulse"></div>
+                ) : (
+                  profileData?.name || "Your Name"
+                )}
+              </h1>
+              <p className="text-blue-600 font-medium mt-1">
+                {loading ? (
+                  <div className="w-32 h-6 bg-gray-200 rounded animate-pulse"></div>
+                ) : (
+                  profileData?.jobTitle || "Professional Title"
+                )}
+              </p>
             </div>
-            <div className="flex justify-end mt-6 space-x-4">
+
+            {/* Contact Details */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-gray-600">
+                  <Phone className="w-5 h-5 text-blue-500" />
+                  <span>
+                    {loading ? (
+                      <div className="w-32 h-5 bg-gray-200 rounded animate-pulse"></div>
+                    ) : (
+                      profileData?.contactNumber || "Not specified"
+                    )}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-600">
+                  <Mail className="w-5 h-5 text-blue-500" />
+                  <span>
+                    {loading ? (
+                      <div className="w-40 h-5 bg-gray-200 rounded animate-pulse"></div>
+                    ) : (
+                      profileData?.email || "email@example.com"
+                    )}
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3 text-gray-600">
+                  <MapPin className="w-5 h-5 text-blue-500" />
+                  <span>
+                    {loading ? (
+                      <div className="w-48 h-5 bg-gray-200 rounded animate-pulse"></div>
+                    ) : (
+                      profileData?.address || "Address not specified"
+                    )}
+                  </span>
+                </div>
+                <div className="flex items-center gap-3 text-gray-600">
+                  <Building2 className="w-5 h-5 text-blue-500" />
+                  <span>
+                    {loading ? (
+                      <div className="w-36 h-5 bg-gray-200 rounded animate-pulse"></div>
+                    ) : (
+                      profileData?.department || "Department"
+                    )}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Edit Modal */}
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center">
+            <div
+              className="absolute inset-0 bg-black/30 backdrop-blur-sm"
+              onClick={() => setIsModalOpen(false)}
+            ></div>
+            <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md m-4 p-6">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 bg-gray-300 rounded"
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
               >
-                Cancel
+                <X className="w-5 h-5" />
               </button>
-              <button
-                onClick={handleUpdate}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-              >
-                Update
-              </button>
+
+              <h2 className="text-xl font-semibold text-gray-900 mb-6">
+                Edit Profile
+              </h2>
+
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                    placeholder="Enter your name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Contact Number
+                  </label>
+                  <input
+                    type="text"
+                    name="contactNumber"
+                    value={formData.contactNumber}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                    placeholder="Enter contact number"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Address
+                  </label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-shadow"
+                    placeholder="Enter your address"
+                  />
+                </div>
+              </div>
+
+              <div className="flex gap-3 justify-end mt-6">
+                <button
+                  onClick={() => setIsModalOpen(false)}
+                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleUpdate}
+                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                >
+                  Save Changes
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

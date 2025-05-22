@@ -20,14 +20,5 @@ export const siteConfig = {
       label: "Shops",
       href: "/shops/all-shops",
     },
-    {
-      label: "Contact",
-      href: "/contact",
-    },
-
-    {
-      label: "About",
-      href: "/about",
-    },
   ],
 };

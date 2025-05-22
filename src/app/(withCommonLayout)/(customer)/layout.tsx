@@ -10,7 +10,7 @@ interface VendorLayoutProps {
 }
 
 const CustomerLayout: FC<VendorLayoutProps> = ({ children }) => {
-  const pathname = usePathname(); // Get the current path
+  const pathname = usePathname();
 
   const showSidebar = pathname.startsWith("/customer");
 

@@ -1,10 +1,11 @@
 /* eslint-disable import/order */
 "use client";
-import { Navbar } from "@/src/components/navbar";
+
 import Footer from "@/src/components/Shared/Footer";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { getAllProducts } from "@/src/services/productServices";
+import Navbar from "@/src/components/navbar";
 
 export default function CommonLayout({
   children,
@@ -31,7 +32,7 @@ export default function CommonLayout({
   return (
     <div className="relative flex flex-col min-h-screen">
       <Navbar products={products} />
-      <main className="container mx-auto max-w-7xl px-6 flex-grow mt-12">
+      <main className="container mx-auto max-w-7xl px-6 flex-grow mt-4">
         {children}
       </main>
       {showFooter && <Footer />}

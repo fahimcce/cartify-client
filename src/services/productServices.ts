@@ -1,22 +1,40 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable padding-line-between-statements */
 "use server";
-import axiosInstance from "../lib/AxiosInstance";
-
-export const getAllProducts = async () => {
-  try {
-    const response = await axiosInstance.get("/products");
-    return response.data;
-  } catch (error) {
-    return { data: [], error: "Something went wrong" };
-  }
-};
 
 export const flashProducts = async () => {
-  try {
-    const response = await axiosInstance.get("/products/flashproducts");
-    return response.data.data;
-  } catch (error) {
-    return { data: [], error: "Something went wrong" };
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/products/flashproducts`,
+    {
+      cache: "no-store",
+    }
+  );
+  if (!res.ok) {
+    throw new Error("Products Not found !!");
   }
+  const result = await res.json();
+  return result.data;
+};
+
+export const getAllProducts = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/products`, {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error("Products Not found !!");
+  }
+  return res.json();
+};
+
+export const getSingleProduct = async (id: string) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/products/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
+  if (!res.ok) {
+    throw new Error("Product Not found !!");
+  }
+  return res.json();
 };

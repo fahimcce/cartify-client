@@ -65,6 +65,10 @@ export type Tcategory = {
   name: string;
   categoryImage: string;
 };
+export type TcategoryReq = {
+  name: string;
+  categoryImage: string;
+};
 
 export type Tlogin = {
   email: string;

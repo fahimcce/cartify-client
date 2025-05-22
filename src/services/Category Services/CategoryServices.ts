@@ -6,24 +6,32 @@ export const createCategory = async (categoryData: {
   name: string;
   categoryImage: string;
 }) => {
-  const response = await axiosInstance.post(
-    "/category/create-category",
-    categoryData
-  );
+  try {
+    const response = await axiosInstance.post(
+      "/category/create-category",
+      categoryData
+    );
 
-  if (!response.data.success) {
-    throw new Error(response.data.message || "Failed to create product.");
+    return response.data.data;
+  } catch (error: any) {
+    throw new Error(error);
   }
+
+  // if (!response.data.success) {
+  //   throw new Error(response.data.message || "Failed to create product.");
+  // }
 };
 
 export const fetchCategories = async () => {
-  try {
-    const response = await axiosInstance.get("/category");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/category`, {
+    cache: "no-store",
+  });
 
-    return response.data.data;
-  } catch {
-    throw new Error("Failed to fatch Category.");
+  if (!res.ok) {
+    throw new Error("Products Not found !!");
   }
+
+  return res.json();
 };
 
 export const deleteCategory = async (id: string) => {
@@ -37,15 +45,20 @@ export const deleteCategory = async (id: string) => {
 };
 
 export const CategoryBasedProducts = async (id: string) => {
-  const response = await axiosInstance.get(`/category/category-products/${id}`);
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_API}/category/category-products/${id}`,
+    {
+      cache: "no-store",
+    }
+  );
 
-  if (!response.data.success) {
-    throw new Error(
-      response.data.message || "Failed to fetch Category Wise Products."
-    );
+  if (!res.ok) {
+    throw new Error("Product Not found !!");
   }
 
-  return response?.data?.data;
+  const result = await res.json();
+
+  return result.data;
 };
 
 export const updateCategory = async (

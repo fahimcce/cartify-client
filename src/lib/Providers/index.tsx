@@ -17,7 +17,14 @@ export interface ProvidersProps {
   themeProps?: ThemeProviderProps;
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 export function Providers({ children, themeProps }: ProvidersProps) {
   const router = useRouter();

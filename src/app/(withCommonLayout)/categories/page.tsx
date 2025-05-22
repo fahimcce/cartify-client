@@ -1,9 +1,9 @@
-import CategoryCard from "@/src/components/Shared/CategoryCard";
+import CategoryPage from "@/src/components/modules/Category/Categories";
 
 export default function CategoriesPage() {
   return (
     <div>
-      <CategoryCard />
+      <CategoryPage />
     </div>
   );
 }

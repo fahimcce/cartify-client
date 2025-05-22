@@ -32,11 +32,13 @@ export const postReview = async (Review: TReview) => {
 };
 
 export const getProductReviews = async (id: string) => {
-  try {
-    const response = await axiosInstance.get(`review/${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/review/${id}`, {
+    cache: "no-store",
+  });
 
-    return response.data.data;
-  } catch (error) {
-    throw error;
+  if (!res.ok) {
+    throw new Error("Reviews Not found !!");
   }
+
+  return res.json();
 };

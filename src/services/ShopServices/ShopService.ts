@@ -4,13 +4,15 @@ import envConfig from "@/src/config/envConfig";
 import axiosInstance from "@/src/lib/AxiosInstance";
 
 export const getAllShops = async () => {
-  try {
-    const response = await axiosInstance.get(`/shops`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/shops`, {
+    cache: "no-store",
+  });
 
-    return response.data;
-  } catch (error) {
-    throw error;
+  if (!res.ok) {
+    throw new Error("Shops Not found !!");
   }
+
+  return res.json();
 };
 
 export const getSingleShop = async (id: string) => {

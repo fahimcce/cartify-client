@@ -5,65 +5,63 @@
 /* eslint-disable no-console */
 "use client";
 
+import { AlertTriangle } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 
 import { CategoryBasedProducts } from "@/src/services/Category Services/CategoryServices";
-import ProductCard from "@/src/components/modules/products/productCard";
 import { IProduct } from "@/src/types/ProductTypes";
+import FeatureCard from "@/src/components/modules/Home/FeatureCard";
+import CLoader from "@/src/components/Shared/CLoader";
 
 export default function CategoryProducts() {
   const params = useParams();
   const id = params?.id;
-  const [products, setProducts] = useState<IProduct[] | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    if (!id) return;
+  const {
+    data: products,
+    isLoading,
+    isError,
+  } = useQuery<IProduct[]>({
+    queryKey: ["category-products", id],
+    queryFn: async () => {
+      if (!id) return [];
+      return await CategoryBasedProducts(id as string);
+    },
+    enabled: !!id,
+  });
 
-    const fetchProduct = async () => {
-      setLoading(true);
-      try {
-        const response = await CategoryBasedProducts(id as string);
-        setProducts(response);
-      } catch {
-        toast.error("Failed to fetch product details.");
-        setProducts(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-48 h-screen">
-        <div className="spinner border-4 border-blue-500 border-t-transparent rounded-full w-12 h-12 animate-spin"></div>
-      </div>
-    );
+  if (isLoading) {
+    return <CLoader />;
   }
 
-  if (!products || products.length === 0) {
+  if (isError || !products || products.length === 0) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <img
-          className="w-1/4 h-1/4"
-          src="https://i.ibb.co.com/QQ5TWtj/sold.jpg"
-        />
+      <div className="flex items-center justify-center min-h-screen  px-4">
+        <div className="text-center">
+          <div className="flex justify-center mb-4 text-yellow-500">
+            <AlertTriangle className="w-12 h-12" />
+          </div>
+          <h1 className="text-3xl font-semibold text-gray-800">
+            Products Sold Out
+          </h1>
+          <p className="mt-2 text-gray-600">
+            Were currently out of stock. Please check back later for updates!
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 min-h-screen">
-      {products
-        .filter((product: IProduct) => !product.isDeleted)
-        .map((product: IProduct) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <div className="h-screen">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-2 mt-8 mb-4">
+        {products
+          .filter((product: IProduct) => !product.isDeleted)
+          .map((product: IProduct) => (
+            <FeatureCard key={product.id} product={product} />
+          ))}
+      </div>
     </div>
   );
 }

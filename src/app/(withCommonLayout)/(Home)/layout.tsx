@@ -5,6 +5,7 @@ export default function layout({
   featureProducts,
   featureCategories,
   flashSales,
+  benefits,
   faq,
 }: {
   children: ReactNode;
@@ -12,10 +13,11 @@ export default function layout({
   featureCategories: ReactNode;
   flashSales: ReactNode;
   faq: ReactNode;
+  benefits: ReactNode;
 }) {
   return (
     <div>
-      {children} {flashSales} {featureProducts} {featureCategories}
+      {children} {flashSales} {featureProducts} {featureCategories} {benefits}
       {faq}
     </div>
   );

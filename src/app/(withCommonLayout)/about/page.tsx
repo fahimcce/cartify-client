@@ -3,7 +3,7 @@ import React from "react";
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
-      <header className="bg-indigo-600 text-white py-6">
+      <header className="bg-green-600 text-white py-6">
         <div className="container mx-auto px-4">
           <h1 className="text-4xl font-bold">About Cartify</h1>
           <p className="mt-2 text-lg">
